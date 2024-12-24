@@ -2,19 +2,51 @@
 
 import Image from "next/image";
 import likeBtn from "../../../public/like.svg"
+import { FormEvent } from "react";
+import { getTokenFromCookies } from "./utils";
+import { usePathname, useRouter } from "next/navigation";
 
-const LikeButton = ({type} : {
-    type: string
+const LikeButton = ({type, postId, bg, commentId, replyId} : {
+    type: string,
+    postId: string,
+    bg: string,
+    commentId?: string,
+    replyId: string
   }) => {
+    const router = useRouter()
+    const pathname = usePathname()
+    async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+      e.preventDefault();
+
+      const token = getTokenFromCookies();
+      try {
+        const url = type === "post" ?
+               `http://localhost:3456/posts/${postId}/like_unlike` :
+
+               type === "comment" ?
+                `http://localhost:3456/posts/${postId}/comments/${commentId}/like_unlike` :
+                `http://localhost:3456/posts/${postId}/comments/${commentId}/replies/${replyId}/like_unlike`
+        const res = await fetch(url, {
+          method: "PUT",
+          headers: { "authorization": `Bearer ${token}` }
+        })
+        if (!res.ok) {
+          alert("unable to like!")
+        } else {
+          router.replace(pathname, {scroll: false})
+        }
+      } catch {
+        throw new Error("")
+      }
+    }
   return (
-    <form action={type==="post" ? `http://localhost:3456/posts/:postId/:action : posts/:postId/comments/:commentId/:action`: ''}
-           method="POST"
-           className="flex items-center w-fit"
-           style={{boxShadow: "0px 0px 0px 0px "}}>
-        <span className="text-[16px] mr-1">0</span>
-        <button type="submit" className="bg-slate-300 p-0 w-fit">
-            <Image title="like" src={likeBtn} alt="like button"  className="h-[22px] w-[22px] rounded-[50%]"/>
-        </button>
+    <form
+        onSubmit={handleSubmit}
+        className=""
+        style={{boxShadow: "0px 0px 0px 0px "}}>
+            <button type="submit" className="bg-slate-300 p-0 w-fit">
+              <Image title="like" src={likeBtn} alt="like button"  className={`h-[22px] w-[22px] rounded-[50%] ${bg}`}/>
+            </button>
     </form>
   )
 }
