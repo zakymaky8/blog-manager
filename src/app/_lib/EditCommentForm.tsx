@@ -40,7 +40,7 @@ const EditCommentForm = ({content, setIsEditMode, postId, commentId, type, reply
             router.replace('/admin-login')
             setIsEditMode(false)
         } else {
-            router.replace(pathname)
+            router.replace(pathname, {scroll: false})
             setIsEditMode(false)
         }
     }
