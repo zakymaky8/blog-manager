@@ -9,10 +9,7 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import DeletePostBtn from '@/app/_lib/DeletePostBtn';
 import AddCommentSec from '@/app/_lib/AddCommentSec';
-
-function cap(word: string):string {
-  return word[0].toUpperCase() + word.slice(1,).toLowerCase()
-}
+import { cap } from '@/app/_lib/utils';
 
 const PostDetail = async ({params}: {
     params: {
@@ -22,6 +19,7 @@ const PostDetail = async ({params}: {
     const { postId } = await params;
     const cookieStore = cookies();
     const token = (await cookieStore).get("token")?.value;
+    
       const res = await fetch(`http://localhost:3456/posts/${postId}`, {
         method: "GET",
         headers: {
@@ -62,12 +60,12 @@ const PostDetail = async ({params}: {
         </div>
 
         <div className="p-4">
-          <p className="text-sm text-justify max-w-[600px]">{post.content}</p>
+          <p className="text-justify max-w-[600px] rounded-xl bg-[#d1e2f3] px-6 p-3 py-8 border-y-[10px] text-[14px] border-slate-800" dangerouslySetInnerHTML={{ __html: post.content }} />
         </div>
         {post.status === "PUBLISHED" &&
         <div className='flex gap-1 items-center w-fit'>
             <span className="text-[14px] -mt-1 cursor-pointer">{post.likes?.length}</span>
-            <LikeButton bg={postIsLiked ? "bg-red-500" : "bg-none"} type='post' postId={postId}/>
+            <LikeButton replyId='' bg={postIsLiked ? "bg-red-500" : "bg-none"} type='post' postId={postId}/>
             <span className='text-[14px] italic -mt-[3px] font-bold'>Like this Post!{postIsLiked && <span className=' text-[14px] opacity-70 font-light'> (You liked this post) </span>}</span>
         </div> }
 
