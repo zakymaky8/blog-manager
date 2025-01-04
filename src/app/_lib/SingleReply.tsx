@@ -28,10 +28,10 @@ const SingleReply = ({reply, authorname, comment, postId, currentUser}: TProps) 
   return (
     <div className="flex flex-col  p-3 rounded-xl " style={{maxWidth: "550px"}}>
         <h1 className="text-[12px] text-gray-600 hover:underline cursor-pointer">@{authorname?.replier.username}</h1>
-        <h1 className="text-[9px]">
+        <h2 className="text-[9px]">
             <span className="opacity-70 text-black">Replied to </span>
             <span className="text-gray-600 hover:underline cursor-pointer">@{authorname?.replied_to.username}</span>
-        </h1>
+        </h2>
 
         {isEditMode ?
             <EditCommentForm
