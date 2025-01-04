@@ -8,6 +8,7 @@ import editBtn from "../../../../public/edit_icon.svg"
 // import publishBtn from "../../../../public/publish.svg"
 import TogglePublish from "@/app/_lib/TogglePublish";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 const Drafts = async () => {
     const cookieStore = cookies();
@@ -18,6 +19,9 @@ const Drafts = async () => {
             "authorization": `Bearer ${token}`
         }
     });
+    if (!res.ok) {
+        redirect("/admin-login")
+    }
     const { posts } : { posts: TPost[]} = await res.json();
   return (
     <div className="w-full flex flex-col flex-auto items-center gap-5 p-4 text-black">
