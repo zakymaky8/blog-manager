@@ -1,11 +1,10 @@
-import Search from "@/app/_lib/Search";
+// import Search from "@/app/_lib/Search";
 import { TPost } from "@/app/_lib/ViewManage";
 import Image from "next/image";
 import Link from "next/link";
 
 import seeBtn from "../../../../public/see.svg"
 import editBtn from "../../../../public/edit_icon.svg"
-// import publishBtn from "../../../../public/publish.svg"
 import TogglePublish from "@/app/_lib/TogglePublish";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -26,7 +25,7 @@ const Drafts = async () => {
   return (
     <div className="w-full flex flex-col flex-auto items-center gap-5 p-4 text-black">
         <h1 className="text-2xl pb-2 border-b-[1px] border-black">Manipulate Drafts</h1>
-        <Search />
+        {/* <Search /> */}
         <div className="flex flex-col gap-3">
             {
                 posts.map((post, index) => {

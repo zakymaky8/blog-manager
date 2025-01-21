@@ -60,7 +60,7 @@ const PostDetail = async ({params}: {
         </div>
 
         <div className="p-4">
-          <p className="text-justify max-w-[600px] rounded-xl bg-[#d1e2f3] px-6 p-3 py-8 border-y-[10px] text-[14px] border-slate-800" dangerouslySetInnerHTML={{ __html: post.content }} />
+          <div className="text-justify max-w-[600px] rounded-xl bg-[#d1e2f3] px-6 p-3 py-8 border-y-[10px] text-[14px] border-slate-800" dangerouslySetInnerHTML={{ __html: post.content }} />
         </div>
         {post.status === "PUBLISHED" &&
         <div className='flex gap-1 items-center w-fit'>
@@ -74,8 +74,6 @@ const PostDetail = async ({params}: {
                 <hr className="w-full border-[1px] border-black opacity-50"/>
                 <div>
                     <AddCommentSec postId={postId} />
-                    {/* <h2 className="font-bold text-xl mb-5">Comments: </h2> */}
-
                     <CommentsCard postId={postId}/>
                 </div>
             </>

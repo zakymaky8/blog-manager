@@ -1,6 +1,6 @@
 import React from 'react'
-import {  TAuthor, TComment, TReply, TReplyActor } from './CommentCard'
 import SingleReply from './SingleReply'
+import { TAuthor, TComment, TReply, TReplyActor } from './type';
 
 const Replies = ({commentReply, replyActorPairs, comment, postId, currentUser}: {commentReply: TReply[], replyActorPairs: TReplyActor[], comment: TComment, postId: string, currentUser: TAuthor}) => {
     function findReplyActorPairs(replierId:string, repliedId:string) {

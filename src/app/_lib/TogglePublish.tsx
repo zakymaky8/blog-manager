@@ -19,7 +19,7 @@ const TogglePublish = ({postId, action}: {
             };
             const token = getTokenFromCookies();
             try {
-                const res = await fetch(`http://localhost:3456/posts/${postId}/${action.toLowerCase()}?_method=PUT`, {
+                const res = await fetch(`http://localhost:3456/posts/${postId}?action=${action.toLowerCase()}`, {
                     method: "PUT",
                     headers: {
                         "authorization": `Bearer ${token}`
@@ -37,6 +37,7 @@ const TogglePublish = ({postId, action}: {
     return (
         <form onSubmit={handleSubmit}>
             <button
+                title="toggle post status"
                 className="text-[11px] w-fit h-fit p-1"
                 type='submit'>
                     {action}

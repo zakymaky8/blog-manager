@@ -36,7 +36,7 @@ const DeletePostBtn = ({postId}: {postId: string}) => {
     <form className="w-fit -mb-[6px]" style={{boxShadow: "0px 0px 0px 0px "}}
         onSubmit={handleSubmit}>
         <button type="submit" className="bg-slate-300 p-0">
-            <Image title="delete comment" className="h-[20px] w-[20px]" src={deleteBtn} alt="delete button"/>
+            <Image title="delete post" className="h-[20px] w-[20px]" src={deleteBtn} alt="delete button"/>
         </button>
     </form>
   )

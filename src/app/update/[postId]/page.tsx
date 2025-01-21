@@ -23,7 +23,7 @@ const UpdatePostForm = async ({params}: {
     const { data } = await res.json();
     const [post, author] = data;
   return (
-    <CreatePostForm excerptContent={post.excerpt} author={author} action="Update" post_id={postId}  pageTitle="Update Post" postContent={post.content} postTitle={post.title}/>
+    <CreatePostForm excerptContent={post.excerpt} readTime={post.readTime} author={author} action="Update" post_id={postId}  pageTitle="Update Post" postContent={post.content} postTitle={post.title}/>
   )
 }
 

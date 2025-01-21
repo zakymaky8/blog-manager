@@ -24,8 +24,8 @@ const EditCommentForm = ({content, setIsEditMode, postId, commentId, type, reply
         const commentData = {
             content: formData.get("content")
         }
-        const url = type === "comment" ? `http://localhost:3456/posts/${postId}/comments/${commentId}/update_content` :
-                                        `http://localhost:3456/posts/${postId}/comments/${commentId}/replies/${replyId}/update_content`;
+        const url = type === "comment" ? `http://localhost:3456/posts/${postId}/comments/${commentId}?action=update_content` :
+                                        `http://localhost:3456/posts/${postId}/comments/${commentId}/replies/${replyId}?action=update_content`;
 
         const res = await fetch(url, {
             method: "PUT",

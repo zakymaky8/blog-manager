@@ -1,12 +1,6 @@
 import { cookies } from "next/headers";
-// import DeleteButton from "./DeleteButton";
-// import LikeButton from "./LikeButton";
-// import ReplyButton from "./ReplyButton";
 import { redirect } from "next/navigation";
 
-// import Image from "next/image";
-// import editBtn from "../../../public/edit_icon.svg"
-// import Link from "next/link";
 import SingleComment from "./SingleComment";
 import Replies from "./Replies";
 

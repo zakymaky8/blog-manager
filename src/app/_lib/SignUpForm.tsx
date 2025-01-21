@@ -1,4 +1,6 @@
 "use client"
+
+
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
@@ -19,7 +21,6 @@ const SignUpForm = () => {
         confirm_password: formData.get("confirm_password"),
         admin_pwd: formData.get("admin_pwd")
       }
-      console.log(userData);
 
       try {
         const response =  await fetch("http://localhost:3456/admin-register", {
@@ -34,8 +35,7 @@ const SignUpForm = () => {
           router.replace("/admin-signup")
           setError(response.status + " " + response.statusText)
         }
-        const userD = await response.json();
-        console.log(userD);
+
         router.replace("/admin-login")
 
       } catch {
@@ -54,7 +54,7 @@ const SignUpForm = () => {
                 name="firstname"
                 id="fname"
                 placeholder="first name"
-                className="w-32 bg-slate-800 rounded-lg p-1 box-border" />
+                className="w-32 bg-slate-800 rounded-lg p-1 box-border placeholder:text-[12px]" />
           </div>
           <div>
             <label htmlFor="lname">Last Name: </label>
@@ -64,7 +64,7 @@ const SignUpForm = () => {
                 name="lastname"
                 id="lname"
                 placeholder="last name"
-                className="w-32 bg-slate-800 rounded-lg p-1 box-border" />
+                className="w-32 bg-slate-800 rounded-lg p-1 box-border placeholder:text-[12px]" />
           </div>
         </div>
         <div  className="flex flex-col gap-4">
@@ -76,7 +76,7 @@ const SignUpForm = () => {
                 name="username"
                 id="uname"
                 placeholder="username"
-                className="w-32 bg-slate-800 rounded-lg p-1 box-border" />
+                className="w-32 bg-slate-800 rounded-lg p-1 box-border placeholder:text-[12px]" />
           </div>
           <div>
             <label htmlFor="pwd">Password: </label>
@@ -86,7 +86,7 @@ const SignUpForm = () => {
                 name="password"
                 id="pwd"
                 placeholder="password"
-                className="w-32 bg-slate-800 rounded-lg p-1 box-border" />
+                className="w-32 bg-slate-800 rounded-lg p-1 box-border placeholder:text-[12px]" />
           </div>
           <div>
             <label htmlFor="cpwd">Confirm Password: </label>
@@ -96,7 +96,7 @@ const SignUpForm = () => {
                 name="confirm_password"
                 id="cpwd"
                 placeholder="confirm"
-                className="w-32 bg-slate-800 rounded-lg p-1 box-border" />
+                className="w-32 bg-slate-800 rounded-lg p-1 box-border placeholder:text-[12px]" />
           </div>
           <div className="flex flex-col gap-2 items-center">
             <label htmlFor="role" className="text-black italic"><span className="text-2xl text-red-500">*</span> Enter admin password!</label> {/* <span className="text-yellow-500 text-[10px]">optional</span>*/}
@@ -109,5 +109,5 @@ const SignUpForm = () => {
       </form>
     )
   }
-  
+
   export default SignUpForm

@@ -26,8 +26,8 @@ const ReplyForm = ({ postId, commentId, setIsReply, action, replyId}:
             content: formData.get("content")
         }
         const url = (action === "to_comment") ?
-                `http://localhost:3456/posts/${postId}/comments/${commentId}/replies/${action}`:
-                `http://localhost:3456/posts/${postId}/comments/${commentId}/replies/${replyId}/${action}`;
+                `http://localhost:3456/posts/${postId}/comments/${commentId}/replies?action=${action}`:
+                `http://localhost:3456/posts/${postId}/comments/${commentId}/replies/${replyId}?action=${action}`;
 
         const res = await fetch(url, {
             method: "POST",

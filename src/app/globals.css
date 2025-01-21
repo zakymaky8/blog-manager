@@ -3,7 +3,97 @@
 @tailwind utilities;
 
 
+/* General reset */
+html {
+  font-family: sans-serif;
+  line-height: 1.15;
+  -webkit-text-size-adjust: 100%;
+}
 
+/* Headings */
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+  text-align: left;
+}
+h2 {
+  font-size: 1.5em;
+  margin: 0.83em 0;
+}
+h3 {
+  font-size: 1.17em;
+  margin: 1em 0;
+}
+h4 {
+  font-size: 1em;
+  margin: 1.33em 0;
+}
+h5 {
+  font-size: 0.83em;
+  margin: 1.67em 0;
+}
+h6 {
+  font-size: 0.67em;
+  margin: 2.33em 0;
+}
+
+/* Paragraphs and text */
+p {
+  margin: 1em 0;
+}
+strong, b {
+  font-weight: bold;
+}
+em, i {
+  font-style: italic;
+}
+
+/* Lists */
+ul, ol {
+  margin: 1em 0;
+  padding-left: 40px;
+}
+li {
+  list-style-type: disc;
+}
+
+/* Links */
+a {
+  color: #0000ee;
+  text-decoration: underline;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+th, td {
+  padding: 0;
+  text-align: left;
+}
+
+/* Forms */
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: 100%;
+  margin: 0;
+}
+button, input {
+  overflow: visible;
+}
+textarea {
+  overflow: auto;
+}
+
+/* Images */
+img {
+  border-style: none;
+}
+
+pre, code {
+  overflow-x: auto
+}
 
 button {
   background: #000;
@@ -12,9 +102,23 @@ button {
   border-radius: 5px;
 }
 button:hover {
-  border: 1px solid rgb(4, 43, 79);
+  opacity: 90%;
 }
 
 button:active {
   border: 1px solid rgb(12, 189, 177);
+}
+
+.spinner {
+  animation: spin 1.5s forwards infinite linear;
+}
+
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(720deg);
+  }
 }

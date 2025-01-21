@@ -5,10 +5,11 @@ import ReplyButton from "./ReplyButton"
 import editBtn from "../../../public/edit_icon.svg"
 import Image from "next/image"
 import DeleteButton from "./DeleteButton"
-import { TAuthor, TComment } from "./CommentCard"
 import { useState } from "react"
 import EditCommentForm from "./EditCommentForm"
 import ReplyForm from "./ReplyForm"
+import { TAuthor, TComment } from "./type"
+import Link from "next/link"
 
 type TProps = {
     commentIsLiked: boolean,
@@ -22,12 +23,11 @@ type TProps = {
 
 const SingleComment = ({commentIsLiked, commentAuthor, comment, currentUser, authorname, postId}: TProps) => {
     const [isEditMode, setIsEditMode] = useState(false);
-    // const [value, setValue] = useState(comment.content)
     const [isReply, setIsReply] = useState(false)
 
   return (
     <div className="flex flex-col  p-3 rounded-xl " style={{maxWidth: "550px"}}>
-        <h1 className="text-sm text-gray-600 hover:underline cursor-pointer">@{authorname?.username}</h1>
+        <h3><Link className="text-sm text-gray-600 hover:underline no-underline cursor-pointer" href={`/user/${comment.user_id}`}>@{authorname?.username}</Link></h3>
         {
         isEditMode ? <EditCommentForm content={comment.content} replyId="" type="comment" commentId = {comment.comments_id} postId={postId} setIsEditMode={setIsEditMode} /> : <p className="pt-1 text-xs italic mb-2">{comment.content}</p>
         

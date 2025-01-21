@@ -21,11 +21,11 @@ const LikeButton = ({type, postId, bg, commentId, replyId} : {
       const token = getTokenFromCookies();
       try {
         const url = type === "post" ?
-               `http://localhost:3456/posts/${postId}/like_unlike` :
+               `http://localhost:3456/posts/${postId}?action=like_unlike` :
 
                type === "comment" ?
-                `http://localhost:3456/posts/${postId}/comments/${commentId}/like_unlike` :
-                `http://localhost:3456/posts/${postId}/comments/${commentId}/replies/${replyId}/like_unlike`
+                `http://localhost:3456/posts/${postId}/comments/${commentId}?action=like_unlike` :
+                `http://localhost:3456/posts/${postId}/comments/${commentId}/replies/${replyId}?action=like_unlike`
         const res = await fetch(url, {
           method: "PUT",
           headers: { "authorization": `Bearer ${token}` }

@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
 import DeletePostBtn from "./DeletePostBtn";
-import Search from "./Search"
-import { TPost } from "./ViewManage";
+// import Search from "./Search"
 import { cookies } from "next/headers";
+import { TPost } from "./type";
 
 const DeletePost = async () => {
     const cookieStore = cookies()
@@ -20,7 +20,7 @@ const DeletePost = async () => {
   return (
     <div className="w-full flex flex-col flex-auto items-center gap-4 p-4 text-black">
         <h1>Delete Posts</h1>
-        <Search />
+        {/* <Search /> */}
         <div className="flex flex-col gap-3">
 
             {
@@ -28,9 +28,9 @@ const DeletePost = async () => {
                     return (
                         <div key={post.posts_id} className="bg-slate-400 flex justify-between min-w-96 border-[1px] border-black p-3 items-center gap-5 rounded-md">
                             <h1 className="max-w-[60%] text-xs">{index+1 + ". " + (post.title.length > 50 ? post.title.slice(0, 50) + "..." : post.title)}</h1>
-                            <div className="flex gap-2">
-                                <DeletePostBtn postId={post.posts_id} />
+                            <div className="flex gap-3">
                                 <span className={`text-[11px] ${post.status === "PUBLISHED" ? 'text-yellow-200' : "text-green-200"}`}>{post.status}</span>
+                                <DeletePostBtn postId={post.posts_id} />
                             </div>
                         </div>
 

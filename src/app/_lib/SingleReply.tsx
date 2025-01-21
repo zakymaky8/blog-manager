@@ -2,13 +2,14 @@
 
 import editBtn from "../../../public/edit_icon.svg"
 import Image from "next/image"
-import { TAuthor, TComment, TReply, TReplyActor } from "./CommentCard"
 import ReplyButton from "./ReplyButton"
 import { useState } from "react"
 import ReplyForm from "./ReplyForm"
 import LikeButton from "./LikeButton"
 import EditCommentForm from "./EditCommentForm"
 import DeleteButton from "./DeleteButton"
+import { TAuthor, TComment, TReply, TReplyActor } from "./type"
+import Link from "next/link"
 
 
 type TProps = {
@@ -27,11 +28,11 @@ const SingleReply = ({reply, authorname, comment, postId, currentUser}: TProps) 
 
   return (
     <div className="flex flex-col  p-3 rounded-xl " style={{maxWidth: "550px"}}>
-        <h1 className="text-[12px] text-gray-600 hover:underline cursor-pointer">@{authorname?.replier.username}</h1>
-        <h2 className="text-[9px]">
+        <h3><Link className="text-[12px] text-gray-600 hover:underline no-underline cursor-pointer" href={`/user/${reply.user_id}/`}>@{authorname?.replier.username}</Link></h3>
+        <h3 className="text-[9px]">
             <span className="opacity-70 text-black">Replied to </span>
-            <span className="text-gray-600 hover:underline cursor-pointer">@{authorname?.replied_to.username}</span>
-        </h2>
+            <Link className="text-gray-600 no-underline hover:underline cursor-pointer" href={`/user/${reply.replied_id}/`}>@{authorname?.replied_to.username}</Link>
+        </h3>
 
         {isEditMode ?
             <EditCommentForm

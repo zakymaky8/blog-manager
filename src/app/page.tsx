@@ -1,14 +1,20 @@
+import { cookies } from "next/headers";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
-export default function Home() {
+export default async function Home() {
+
+  const res = await fetch(`http://localhost:3456/auth/`, {headers: { "authorization": `Bearer ${(await cookies()).get("token")?.value}`}});
+  if (res.ok) {
+    redirect("/actions")
+  }
   return (
-    <div className="flex-auto flex flex-col items-center p-5 justify-center">
-      <h2 className="text-2xl mb-2 text-black">Actions</h2>
-      <div className="flex flex-col items-center gap-3 p-5 bg-slate-500 rounded-2xl">
-          <Link href="/create"><button className="w-[259px] hover:text-gray-500 text-slate-300">Create Blog Post</button></Link>
-          <Link href="/read"><button className="w-[259px] hover:text-gray-500 text-slate-300">View Posts and Manage Comments</button></Link>
-          <Link href="/update"><button className="w-[259px] hover:text-gray-500 text-slate-300">Update Post</button></Link>
-          <Link href="/delete"><button className="w-[259px] hover:text-gray-500 text-slate-300">Delete Post(s)</button></Link>
+    <div className="flex-auto flex items-center justify-center flex-col gap-20">
+      <h2 className="text-black text-4xl">Manage Blog</h2>
+      <div className="flex gap-6 items-center">
+        <button className="opacity-80 hover:opacity-100"><Link href="/admin-login" className="text-white no-underline">Login here</Link></button>
+        <span className="text-black">Or</span>
+        <button className="opacity-80 hover:opacity-100"><Link href="/admin-signup" className="text-white no-underline">Register here</Link></button>
       </div>
     </div>
   );
