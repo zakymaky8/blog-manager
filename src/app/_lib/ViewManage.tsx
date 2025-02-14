@@ -46,7 +46,7 @@ const ViewManage = async () => {
         <h1 className="text-2xl pb-2 border-b-[1px] border-black">View Posts and Manage Comments</h1>
         {/* <Search /> */}
         <div className="flex flex-col gap-3">
-            {
+            { posts.length > 0 ? 
                 posts.map((post, index) => {
                     return (
                         <div key={post.posts_id} className="bg-slate-400 flex-wrap flex justify-between min-w-96 border-[1px] border-black p-3 items-center gap-5 rounded-md">
@@ -58,7 +58,11 @@ const ViewManage = async () => {
                             </div>
                         </div>
                     )
-                })
+                }) :
+                <span 
+                    className="text-center opacity-60 text-[14px] mt-20 italic">
+                        Your posts will appear here If you create one!
+                </span>
             }
         </div>
     </div>

@@ -30,20 +30,24 @@ const Users = async  () => {
 
     {/* <Search /> */}
     <div className="flex flex-col gap-3">
-        {
-        fileteredUsers.map((user: TAuthor, index:number) => {
-                return (
-                    <div key={user.users_id} className="bg-slate-400 flex justify-between min-w-96 border-[1px] border-black p-3 items-center gap-5 rounded-md">
-                        <h1 className="max-w-[60%] text-xs">
-                            <strong><em>{index+1 + ". " + cap(user.username)}</em></strong>
-                        </h1>
-                        <div className="flex gap-2">
-                            <Link href={`/user/${user.users_id}`}><button className="h-fit p-1 text-xs">See User</button></Link>
-                            <Link href={`/user/${user.users_id}/activities`}><button className="h-fit p-1 text-xs">Activities</button></Link>
+        { fileteredUsers.length > 0 ?
+            fileteredUsers.map((user: TAuthor, index:number) => {
+                    return (
+                        <div key={user.users_id} className="bg-slate-400 flex justify-between min-w-96 border-[1px] border-black p-3 items-center gap-5 rounded-md">
+                            <h1 className="max-w-[60%] text-xs">
+                                <strong><em>{index+1 + ". " + cap(user.username)}</em></strong>
+                            </h1>
+                            <div className="flex gap-2">
+                                <Link href={`/user/${user.users_id}`}><button className="h-fit p-1 text-xs">See User</button></Link>
+                                <Link href={`/user/${user.users_id}/activities`}><button className="h-fit p-1 text-xs">Activities</button></Link>
+                            </div>
                         </div>
-                    </div>
-                )
-            })
+                    )
+                }) : 
+                <span 
+                    className="text-center opacity-60 text-[14px] mt-20 italic">
+                        There are no users who created account yet!
+                </span>
         }
     </div>
 </div>

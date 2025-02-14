@@ -36,6 +36,7 @@ const LoginForm = () => {
       }
 
       const { token } = await res.json();
+      console.log(token)
       document.cookie = `token=${token}; path=/; secure`
       router.replace("/actions")
       await new Promise(() => setTimeout(() => window.location.reload(), 1000))
@@ -68,3 +69,5 @@ const LoginForm = () => {
 }
 
 export default LoginForm
+
+// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2Vyc19pZCI6IjkxOTYyYmZmLTY4NGEtNGU5ZC04MmYwLWI0OWQ2ZGY3MWJmNyIsImZpcnN0bmFtZSI6Ilpla2FyeWFzIiwibGFzdG5hbWUiOiJNZWt1YW5pbml0IiwidXNlcm5hbWUiOiJ6YWt5ZGV2IiwicGFzc3dvcmQiOiIkMmIkMTAkVXFaR0ZWSVNwSzR1SUoyYUNuR2x6dWFxRm8xby5mb0NJcTY0U29oOVFncE9FWUM3SGF6b2EiLCJSb2xlIjoiQURNSU4iLCJpc1dhcm5lZCI6ZmFsc2UsImlhdCI6MTczOTA0Njg2OSwiZXhwIjoxNzM5MDU0MDY5fQ.XlO0YrNa6BZGtVZS_14K_5nQ_EUGiAZMiuBwm3neO9k

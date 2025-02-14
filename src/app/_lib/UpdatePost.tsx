@@ -36,7 +36,7 @@ const UpdatePost = async () => {
         <h1 className="text-2xl pb-2 border-b-[1px] border-black">Update Published Post</h1>
         {/* <Search /> */}
         <div className="flex flex-col gap-3">
-            {
+            { posts.length > 0 ? 
                 posts.map((post:TPost, index: number) => {
                     return (
                         <div key={post.posts_id} className="bg-slate-400 flex justify-between min-w-96 border-[1px] border-black p-3 items-center gap-5 rounded-md">
@@ -47,7 +47,11 @@ const UpdatePost = async () => {
                             </div>
                         </div>
                     )
-                })
+                }) : 
+                <span 
+                    className="text-center opacity-60 text-[14px] mt-20 italic">
+                        Published posts will appear here If you create one!
+                </span>
             }
         </div>
     </div>
