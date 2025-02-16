@@ -1,5 +1,6 @@
+import { fetchSingleUser } from "@/actions/fetchsAction";
 import DeleteAccount from "@/app/_lib/DeleteAccount";
-import { cookies } from "next/headers";
+import { TAuthor } from "@/app/_lib/type";
 import Link from "next/link"
 import { redirect } from "next/navigation";
 
@@ -7,29 +8,22 @@ const UserDetail = async ({ params }: {params: {userId: string}}) => {
 
   const { userId } = await params;
 
-  const token = (await cookies()).get("token")?.value;
+  const { success, data, redirectUrl, status, message } = await fetchSingleUser(userId);
 
-  const res = await fetch(`http://localhost:3456/user/${userId}`, {
-    headers: {
-      "authorization": `Bearer ${token}`,
-      "content-type": "application/json"
-    }
-  });
+  if (!success && redirectUrl !== null) {
+      redirect(redirectUrl)
+  }
 
-  if (!res.ok && res.status === 404) {
-    const {error} = await res.json()
+  const { user } : { user: TAuthor} = data
+
+  if (status === 404) {
     return (
       <div className=" flex-auto text-center pt-40 p-20 text-red-900 italic">
-          <p className="opacity-60 mb-10">{error}!</p>
+          <p className="opacity-60 mb-10">{message}!</p>
           <Link href="/user" className="hover:opacity-60 no-underline">👈 Back to users</Link>
       </div>
     )
   }
-  else if (!res.ok && (res.status === 401 || res.status === 403)) {
-    redirect("/admin-login")
-  }
-
-  const { user } = await res.json();
 
   return (
     <div className="flex-auto text-blue-950 flex gap-10 flex-col items-center">
