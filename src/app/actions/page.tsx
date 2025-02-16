@@ -2,9 +2,15 @@ import Image from "next/image";
 import Link from "next/link";
 import update from "../../../public/edit_icon.svg";
 import deleter from "../../../public/delete.svg";
+import { getAccessToken } from "@/utils/server-only";
+import { redirect } from "next/navigation";
 
 
 export default async function Actions() {
+  const token = await getAccessToken()
+  if (!token) {
+    redirect("/admin-login")
+  }
   return (
     <div className="flex-auto flex flex-col items-center p-5 justify-center">
       <h2 className="text-2xl mb-2 text-black">Actions</h2>
@@ -44,7 +50,7 @@ export default async function Actions() {
 
           <Link href="/user/">
                 <button className="w-[259px] hover:text-gray-500 text-slate-300">
-                👱 Manage Users
+                  👱 Manage Users
                 </button>
           </Link>
       </div>

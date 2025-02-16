@@ -1,37 +1,28 @@
 import Link from "next/link"
-// import Search from "../_lib/Search"
-import { cookies } from "next/headers"
 import { redirect } from "next/navigation";
 import { TAuthor } from "../_lib/type";
 import { cap } from "../_lib/utils";
+import { fetchALlUsers } from "@/actions/fetchsAction";
 
 const Users = async  () => {
-    const cookieStore = cookies();
-    const token = (await cookieStore).get("token")?.value;
 
-    const res = await fetch(`http://localhost:3456/users`, {
-        headers: {
-            "authorization": `Bearer ${token}`,
-            "content-type": "application/json"
-        }
-    })
-    if (!res.ok) redirect("/admin-login")
+    const { success, data, redirectUrl } = await fetchALlUsers();
 
-    const {users}:{users: TAuthor[]} = await res.json();
-    const fileteredUsers = users.filter(user => user.Role === "USER")
+    if (!success && redirectUrl !== null) {
+        redirect(redirectUrl)
+    }
+    const { users } : { users: TAuthor[]} = data
 
   return (
     <div className="w-full flex flex-col flex-auto items-center gap-5 p-4 text-black">
 
     <h2 className="text-2xl pb-2 border-b-[1px] border-black">
         Users
-        <span className="ml-5 text-yellow-700">{fileteredUsers.length}</span>
+        <span className="ml-5 text-yellow-700">{users.length}</span>
     </h2>
-
-    {/* <Search /> */}
     <div className="flex flex-col gap-3">
-        { fileteredUsers.length > 0 ?
-            fileteredUsers.map((user: TAuthor, index:number) => {
+        { users.length > 0 ?
+            users.map((user: TAuthor, index:number) => {
                     return (
                         <div key={user.users_id} className="bg-slate-400 flex justify-between min-w-96 border-[1px] border-black p-3 items-center gap-5 rounded-md">
                             <h1 className="max-w-[60%] text-xs">

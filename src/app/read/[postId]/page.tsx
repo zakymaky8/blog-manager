@@ -2,14 +2,13 @@ import CommentsCard from '@/app/_lib/CommentCard';
 import LikeButton from '@/app/_lib/LikeButton';
 import TogglePublish from '@/app/_lib/TogglePublish';
 import Image from 'next/image';
-import React from 'react'
 import editbBtn from "../../../../public/edit_icon.svg"
 import Link from 'next/link';
-import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import DeletePostBtn from '@/app/_lib/DeletePostBtn';
 import AddCommentSec from '@/app/_lib/AddCommentSec';
 import { cap } from '@/app/_lib/utils';
+import { fetchSinglePost } from '@/actions/fetchsAction';
 
 const PostDetail = async ({params}: {
     params: {
@@ -17,23 +16,14 @@ const PostDetail = async ({params}: {
     }
   }) => {
     const { postId } = await params;
-    const cookieStore = cookies();
-    const token = (await cookieStore).get("token")?.value;
-    
-      const res = await fetch(`http://localhost:3456/posts/${postId}`, {
-        method: "GET",
-        headers: {
-          "content-type": "application/json",
-          "authorization": `Bearer ${token}`
-        }
-      });
-      if (!res.ok) {
-        redirect("/admin-login")
-      }
-      const { data } = await res.json();
-      const [post, author, currentUser] = data
-      const postIsLiked = post.likes.includes(currentUser.users_id) ? true : false
-      
+
+    const { success, data, redirectUrl } = await fetchSinglePost(postId)
+
+    if (!success && redirectUrl !== null) {
+      redirect(redirectUrl)
+    }
+    const {post, author, currentUser} = data
+    const postIsLiked = post.likes.includes(currentUser.users_id) ? true : false
 
     return (
       <div className="text-black flex flex-col w-full items-center gap-5 p-5 flex-auto">
@@ -65,7 +55,7 @@ const PostDetail = async ({params}: {
         {post.status === "PUBLISHED" &&
         <div className='flex gap-1 items-center w-fit'>
             <span className="text-[14px] -mt-1 cursor-pointer">{post.likes?.length}</span>
-            <LikeButton replyId='' bg={postIsLiked ? "bg-red-500" : "bg-none"} type='post' postId={postId}/>
+            <LikeButton replyId='' bg={postIsLiked ? "bg-red-500" : "bg-none"} type='post' postId={postId} commentId=''/>
             <span className='text-[14px] italic -mt-[3px] font-bold'>Like this Post!{postIsLiked && <span className=' text-[14px] opacity-70 font-light'> (You liked this post) </span>}</span>
         </div> }
 

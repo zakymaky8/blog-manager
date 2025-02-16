@@ -1,31 +1,22 @@
+import { fetchSingleUserActivities } from '@/actions/fetchsAction';
 import DeleteButton from '@/app/_lib/DeleteButton';
 import { TAuthor, TPaired, TPost } from '@/app/_lib/type';
 import { decideWhichFormat } from '@/app/_lib/utils';
-import { cookies } from 'next/headers';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import React from 'react'
 
 const UserActivities = async ({ params }: {params: {userId: string}}) => {
   const { userId } = await params;
-  const token = (await cookies()).get("token")?.value;
 
-  const res = await fetch(`http://localhost:3456/user/${userId}/activities`, {
-    headers: {
-      "authorization": `Bearer ${token}`,
-      "content-type": "application/json"
-    }
-  })
+  const { success, data, redirectUrl, status, message } = await fetchSingleUserActivities(userId);
 
-  if (!res.ok && res.status === 404) {
-    const {error} = await res.json();
-    return <div className='flex-auto text-red-800'>{error}</div>
+  if (status === 404) return <div className='flex-auto text-red-800'>{message}</div>
+
+  if (!success && redirectUrl !== null) {
+      redirect(redirectUrl)
   }
-  else if (!res.ok && (res.status === 403 || res.status === 401)) {
-    redirect("/admin-login")
-  }
-  const activities = await res.json();
-  const { user, likedPosts, paired }: {user: TAuthor,likedPosts: TPost[], paired: TPaired[]} = activities
+  const { user, likedPosts, paired }: {user: TAuthor,likedPosts: TPost[], paired: TPaired[]} = data
 
   return (
     <div className='flex-auto text-black flex flex-col items-center mb-20 gap-6'>

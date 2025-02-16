@@ -1,8 +1,9 @@
-import { cookies } from "next/headers";
+// import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import SingleComment from "./SingleComment";
 import Replies from "./Replies";
+import { fetchPostsComments } from "@/actions/fetchsAction";
 
 
 type TProps = {
@@ -43,22 +44,14 @@ export type TReplyActor = {
 }
 
 const CommentsCard = async ({ postId }: TProps) => {
-    const cookieStore = await cookies();
-    const token = cookieStore.get("token")?.value;
-    const res = await  fetch(`http://localhost:3456/posts/${postId}/comments`,{
-      headers: {
-        "authorization": `Bearer ${token}`,
-        "content-type": "application/json"
-      }
-    });
-    if (!res.ok) {
-      redirect("/login")
-    }
-    const { data } = await res.json();
-    const [comments, authors, currentUser, replies, replyActorPairs]: [TComment[], TAuthor[], TAuthor, TReply[], TReplyActor[]] = data;
 
-    function findAuthor(id:string) {
-      const authr = authors.find((author) => author.users_id === id);
+    const { data:{ comments, authors, currentUser, replies, replyActorPairs }, redirectUrl, success  } = await fetchPostsComments(postId)
+
+    if (!["", null].includes(redirectUrl) && !success) {
+      redirect(redirectUrl!)
+    }
+    function findAuthor(id: string) {
+      const authr = authors.find((author:TAuthor) => author.users_id === id);
       return authr
     }
 
@@ -66,10 +59,10 @@ const CommentsCard = async ({ postId }: TProps) => {
   return (
     <div className="bg-slate-200 p-3 rounded-xl max-w-[450px] min-w-[350px]">
       <h2 className="font-bold text-xl mb-5">Comments: {comments.length}</h2>
-        {comments.map((comment) => {
+        {comments.map((comment:TComment) => {
             const commentIsLiked = comment.likes.includes(currentUser.users_id) ? true : false;
             const commentAuthor = findAuthor(comment.user_id);
-            const thisCommentReply = replies.filter(reply => reply.comment_id === comment.comments_id) || null;
+            const thisCommentReply = replies.filter((reply:TReply) => reply.comment_id === comment.comments_id) || null;
             return (
                 <div key={comment.comments_id} className="flex flex-col gap-3">
                   <SingleComment

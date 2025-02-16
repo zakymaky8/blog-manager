@@ -1,5 +1,5 @@
+import { fetchSinglePost } from "@/actions/fetchsAction";
 import CreatePostForm from "@/app/_lib/CreatePostForm"
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 const UpdatePostForm = async ({params}: {
@@ -8,22 +8,25 @@ const UpdatePostForm = async ({params}: {
     }
 
 }) => {
-  const { postId } = await params
-  const cookieStore =  cookies();
-  const token = (await cookieStore).get("token")?.value;
-  const res = await fetch(`http://localhost:3456/posts/${postId}`, {
-      headers: {
-          "content-type": "application/json",
-          "authorization": `Bearer ${token}`
-      }
-    })
-    if (!res.ok) {
-      redirect("/admin-login")
+
+  const { postId } = await params;
+  const { success, redirectUrl, data } = await fetchSinglePost(postId)
+  if (redirectUrl !== null && !success) {
+    redirect(redirectUrl)
   }
-    const { data } = await res.json();
-    const [post, author] = data;
+  const {post, author} = data;
+
   return (
-    <CreatePostForm excerptContent={post.excerpt} readTime={post.readTime} author={author} action="Update" post_id={postId}  pageTitle="Update Post" postContent={post.content} postTitle={post.title}/>
+    <CreatePostForm
+          excerptContent={post.excerpt}
+          readTime={post.readTime}
+          author={author}
+          action="Update"
+          post_id={postId}
+          pageTitle="Update Post"
+          postContent={post.content}
+          postTitle={post.title}
+      />
   )
 }
 
