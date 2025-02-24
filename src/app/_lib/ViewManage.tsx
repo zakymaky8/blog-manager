@@ -1,8 +1,7 @@
 import Link from "next/link"
-// import Search from "./Search"
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { decideWhichFormat } from "./utils";
+import { fetchAllPosts } from "@/actions/fetchsAction";
 
 export type TPost = {
     posts_id: string;
@@ -28,25 +27,19 @@ export type TComment = {
 }
 
 const ViewManage = async () => {
-    const cookieStore = cookies();
-    const token = (await cookieStore).get("token")?.value;
 
-    const res = await fetch("http://localhost:3456/manage_posts/", {
-        headers: {
-            "content-type": "application/json",
-            "authorization": `Bearer ${token}`
-        }
-    });
-    if (!res.ok) {
-        redirect("/admin-login")
+    const { success, data, redirectUrl } = await fetchAllPosts();
+
+    if (!success && redirectUrl !== null) {
+        redirect(redirectUrl)
     }
-    const { posts } : { posts: TPost[]} = await res.json();
+
+    const { posts } : { posts: TPost[]} = data
   return (
     <div className="w-full flex flex-col flex-auto items-center gap-5 p-4 text-black">
         <h1 className="text-2xl pb-2 border-b-[1px] border-black">View Posts and Manage Comments</h1>
-        {/* <Search /> */}
         <div className="flex flex-col gap-3">
-            { posts.length > 0 ? 
+            { posts.length > 0 ?
                 posts.map((post, index) => {
                     return (
                         <div key={post.posts_id} className="bg-slate-400 flex-wrap flex justify-between min-w-96 border-[1px] border-black p-3 items-center gap-5 rounded-md">
@@ -59,7 +52,7 @@ const ViewManage = async () => {
                         </div>
                     )
                 }) :
-                <span 
+                <span
                     className="text-center opacity-60 text-[14px] mt-20 italic">
                         Your posts will appear here If you create one!
                 </span>
@@ -69,7 +62,4 @@ const ViewManage = async () => {
   )
 }
 
-
-// by manage we mean replying, deleting, liking comments
 export default ViewManage
-

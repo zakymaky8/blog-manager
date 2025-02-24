@@ -2,19 +2,15 @@
 
 import { Editor } from "@tinymce/tinymce-react";
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react"
+import {  useActionState, useEffect, useState } from "react"
 
 import { useRef } from "react";
 import EditorTinyMce from "./EditorTinyMce";
+import { cap } from "./utils";
+import { TStatus } from "@/utils/type";
+import { createPostAction } from "@/actions/createPost";
+import { updatePostAction } from "@/actions/updatePost";
 
-
-
-function cap(word: string):string {
-    return word[0].toUpperCase() + word.slice(1,).toLowerCase()
-  }
-  
-
-type TStatus = "DRAFT" | "PUBLISHED";
 type TProps = {
     postTitle: string,
     postContent: string,
@@ -37,56 +33,39 @@ const CreatePostForm = ({post_id, postTitle, postContent, action, pageTitle, aut
     const router = useRouter()
     const editorRef = useRef<Editor | null>(null);
 
+    const actionWrapper =
+        function(
+            prev:{
+                  success: boolean,
+                  message: string,
+                  redirectUrl: string | null
+                },
+            formData: FormData) {
 
-    async function handleSubmit(e:FormEvent<HTMLFormElement>) {
-        e.preventDefault()
-        const formData = new FormData(e.target as HTMLFormElement);
-
-        const getTokenFromCookies = () => {
-            const cookies = document.cookie.split("; ");
-            const tokenCookie = cookies.find(cookie => cookie.startsWith("token="));
-            return tokenCookie ? tokenCookie.split("=")[1] : null;
-        };
-        const token = getTokenFromCookies();
-
-        const blogData = {
-            title: formData.get("title"),
-            excerpt: formData.get("excerpt"),
-            timeRead: formData.get("time_read"),
-            content: editorRef.current?.getContent(),
-        }
-        try {
-            const url = action.toLowerCase() === "update" ?
-                            `http://localhost:3456/posts/${post_id}?action=${action.toLowerCase()}`:
-                            `http://localhost:3456/create_post?status=${status}`;
-    
-            const method = action.toLowerCase() === "update" ? "PUT" : "POST"
-            console.log(url)
-            const res = await fetch( url, {
-                                        method: method,
-                                        headers: {
-                                            "authorization": `Bearer ${token}`,
-                                            "content-type": "application/json"
-                                        },
-                                        body: JSON.stringify(blogData)
-                                    })
-            if (res.ok) {
-                if (action.toLowerCase() === "update") {
-                    alert("Update successfull!")
-                } else {
-                    router.push("/read");
-                }
-            } else {
-                router.replace("/admin-login")
-            }
-            
-        } catch  {
-            throw new Error("Unauthorized: faild to create a post!")
-        }
+        const editorContent = editorRef.current?.getContent()
+        return action.toLowerCase() === "update" ?
+                updatePostAction(post_id, action, editorContent, formData) :
+                createPostAction(status, editorContent, formData)
     }
+    const [state, formStateAction ] = useActionState(actionWrapper, {success: "", message: "", redirectUrl: ""});
+
+    if (!["", null].includes(state.redirectUrl)) {
+        router.push(state.redirectUrl!)
+    }
+    if(state.success === false) {
+        alert(state.message)
+    }
+
+    useEffect(() => {
+        if (state.success === true) {
+            router.back();
+        }
+        state.success = ""
+    }, [state, router]);
+
     return (
       <form
-        onSubmit={handleSubmit}
+          action={formStateAction}
           className="text-black flex flex-wrap flex-col items-center justify-between gap-6 p-2 flex-auto">
           <h1 className="text-2xl font-bold border-b-[1px] border-red-400">{pageTitle}</h1>
           {typeof author !== "string" && <span>Authored By: {cap(author.firstname)} {cap(author.lastname)}</span>}
@@ -126,20 +105,37 @@ const CreatePostForm = ({post_id, postTitle, postContent, action, pageTitle, aut
                 className=" text-slate-900 font-sans bg-slate-200 text-sm w-[70px] p-2"
                 type="number"
                 required
+                min={0}
                 name="time_read"
-                id="time_read" />
+                id="time_read"
+            />
           </div>
 
           <div className="flex gap-2 flex-col relative ">
-              <label htmlFor="content"  className="text-slate-500 mb-6 mt-10">👉 Write Your idea</label>
+              <label htmlFor="content"  className="text-slate-500 mb-6 mt-10">👉 Write Your idea </label>
               <EditorTinyMce postContent={postContent} editorRef ={editorRef} />
           </div>
+
           <div className="text-sm flex w-96 justify-between my-20">
-              {action.toLowerCase() !== "update" && <button type="submit" className="bg-yellow-950" onClick={() => setStatus("DRAFT")}>📝 Save As Draft</button>}
-              <button type="submit" className="bg-green-950" onClick={() => action.toLowerCase()==="update" ? null : setStatus("PUBLISHED")}>{action}</button>
+              {
+                action.toLowerCase() !== "update" &&
+                    <button
+                        type="submit"
+                        className="bg-yellow-950"
+                        onClick={() => setStatus("DRAFT")}
+                         >📝 Save As Draft
+                    </button>
+              }
+
+              <button
+                    type="submit"
+                    className="bg-green-950"
+                    onClick={() => action.toLowerCase()==="update" ? null : setStatus("PUBLISHED")}
+                     >{action}
+              </button>
           </div>
       </form>
     )
   }
-  
+
   export default CreatePostForm

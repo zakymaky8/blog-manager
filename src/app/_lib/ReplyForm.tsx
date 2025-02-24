@@ -1,8 +1,9 @@
 "use client"
 
-import {  Dispatch, FormEvent, SetStateAction, useState } from "react"
-import { getTokenFromCookies } from "./utils"
-import { usePathname, useRouter } from "next/navigation"
+import {  Dispatch, SetStateAction, useActionState, useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
+import { TReply } from "./type"
+import { createReplyToCommentAction, createReplyToReplyAction } from "@/actions/createReply"
 
 
 const ReplyForm = ({ postId, commentId, setIsReply, action, replyId}:
@@ -15,41 +16,32 @@ const ReplyForm = ({ postId, commentId, setIsReply, action, replyId}:
 }) => {
     const [replyValue, setReplyValue] = useState("")
     const router = useRouter()
-    const pathname = usePathname()
 
-    async function handleSubmit(e:FormEvent<HTMLFormElement>) {
-        e.preventDefault()
-        const token = getTokenFromCookies()
-
-        const formData = new FormData(e.target as HTMLFormElement);
-        const commentData = {
-            content: formData.get("content")
-        }
-        const url = (action === "to_comment") ?
-                `http://localhost:3456/posts/${postId}/comments/${commentId}/replies?action=${action}`:
-                `http://localhost:3456/posts/${postId}/comments/${commentId}/replies/${replyId}?action=${action}`;
-
-        const res = await fetch(url, {
-            method: "POST",
-            headers: {
-                "authorization": `Bearer ${token}`,
-                "content-type": "application/json"
-            },
-            body: JSON.stringify(commentData)
-        })
-        if (!res.ok) {
-            setIsReply(false)
-            alert("unable to REPLY")
-            
-        } else {
-            setIsReply(false)
-            router.replace(pathname, {scroll: false})
-            // if (replyValue)setIsReply(false)
-        }
+    const actionWrapper = async (prev: { success: boolean, message: string, redirectUrl: string | null, reply: TReply }, formData: FormData) => {
+        return action === "to_comment" ?
+                    await createReplyToCommentAction(postId, commentId, action, formData) :
+                    await createReplyToReplyAction(postId, commentId, replyId, action, formData)
     }
+
+    const [state, formStateAction] = useActionState(actionWrapper, { success: "", message: "", redirectUrl: "", reply: "" })
+
+    if (!state.success && !["", null].includes(state.redirectUrl)) {
+        router.replace(state.redirectUrl!)
+    } else if (state.success === false) {
+        alert(state.message)
+    }
+
+    useEffect(() => {
+        if (state.success === true) {
+            setIsReply(false)
+            router.refresh();
+        }
+        state.success = ""
+    }, [state, router, setIsReply]);
+
   return (
     <form
-        onSubmit={handleSubmit}
+        action={formStateAction}
         className="flex mt-1 mb-1"
         >
         <textarea
