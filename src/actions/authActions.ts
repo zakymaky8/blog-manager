@@ -11,7 +11,6 @@ type TSignInState = {
 
 
 export const SignInAction = async (prevstate: TSignInState, formdata: FormData) => {
-    // console.log(prevstate);
 
     const userCredential = {
         username: formdata.get("username")!.toString(),
@@ -19,9 +18,7 @@ export const SignInAction = async (prevstate: TSignInState, formdata: FormData) 
         admin_pwd: formdata.get("admin_pwd")!.toString()
     }
 
-    //  the request
-
-    const url = `${process.env.API_URL}/api/admin/login`
+    const url = `${process.env.API_URL}/api/admin/auth/login`
 
     try {
         const response = await fetch(url, {

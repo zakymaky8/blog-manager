@@ -30,12 +30,14 @@ export default function Header() {
   return (
     <div className="flex justify-between items-center min-h-28 bg-gray-900 shadow-inner p-4 flex-wrap gap-4">
         <Link href="/" className="no-underline text-white opacity-80"><h1>Blog Manager </h1></Link>
-        <div className="flex gap-2 items-center justify-between">
+        <div className="flex gap-6 items-center justify-between">
             <Link href="/"><button className="bg-transparent text-[22px]"> 🏠︎ </button></Link>
             {isLogged &&
             <>
               <Link href="/create"><Image src={create} alt="create" className="bg-white rounded-[50%]"/></Link>
+              <Link href="/read/drafts"><button className="bg-transparent p-1 text-[20px]"> 📝 </button></Link>
               <Logout isLogged={isLogged} setIsLogged={setIsLogged} />
+
               <span>{user?.username}</span>
             </>}
 
