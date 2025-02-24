@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { decideWhichFormat } from "./utils";
 import { fetchPublishedPosts } from "@/actions/fetchsAction";
+import Inconvienence from "./Inconveinence";
 
 export type TPost = {
     posts_id: string;
@@ -17,9 +18,13 @@ export type TPost = {
 }
 
 const UpdatePost = async () => {
-    const { redirectUrl, success, posts } = await fetchPublishedPosts()
+    const { redirectUrl, success, posts, status, message } = await fetchPublishedPosts()
     if (redirectUrl !==null && !success) {
         redirect(redirectUrl)
+    }
+
+    if (status === false || success === false) {
+        return <Inconvienence message={message}/>
     }
   return (
     <div className="w-full flex flex-col flex-auto items-center gap-4 p-4 text-black">

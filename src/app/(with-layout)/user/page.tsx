@@ -3,13 +3,17 @@ import { redirect } from "next/navigation";
 import { TAuthor } from "../../_lib/type";
 import { cap } from "../../_lib/utils";
 import { fetchALlUsers } from "@/actions/fetchsAction";
+import Inconvienence from "@/app/_lib/Inconveinence";
 
 const Users = async  () => {
 
-    const { success, data, redirectUrl } = await fetchALlUsers();
+    const { success, data, redirectUrl, status, message } = await fetchALlUsers();
 
     if (!success && redirectUrl !== null) {
         redirect(redirectUrl)
+    }
+    if (status === false || success === false) {
+        return <Inconvienence message={message}/>
     }
     const { users } : { users: TAuthor[]} = data
 

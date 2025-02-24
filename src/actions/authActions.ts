@@ -77,12 +77,14 @@ export const checkLogInStatus = async () => {
         return {
             success: success,
             message: message,
+            status: true,
             user: user
         }
     } catch {
         return {
             success: false,
-            message: "Error occured!",
+            status: false,
+            message: "Failed to fetch login status information!",
             user: null
         }
     }

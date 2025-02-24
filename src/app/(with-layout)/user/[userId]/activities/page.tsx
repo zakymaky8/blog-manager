@@ -1,5 +1,6 @@
 import { fetchSingleUserActivities } from '@/actions/fetchsAction';
 import DeleteButton from '@/app/_lib/DeleteButton';
+import Inconvienence from '@/app/_lib/Inconveinence';
 import { TAuthor, TPaired, TPost } from '@/app/_lib/type';
 import { decideWhichFormat } from '@/app/_lib/utils';
 import Link from 'next/link';
@@ -9,12 +10,15 @@ import React from 'react'
 const UserActivities = async ({ params }: {params: {userId: string}}) => {
   const { userId } = await params;
 
-  const { success, data, redirectUrl, status, message } = await fetchSingleUserActivities(userId);
+  const { success, data, redirectUrl, status, message, fetchstatus } = await fetchSingleUserActivities(userId);
 
   if (status === 404) return <div className='flex-auto text-red-800'>{message}</div>
 
   if (!success && redirectUrl !== null) {
       redirect(redirectUrl)
+  }
+  if (fetchstatus === false || !success) {
+    return <Inconvienence message={message} />
   }
   const { user, likedPosts, paired }: {user: TAuthor,likedPosts: TPost[], paired: TPaired[]} = data
 

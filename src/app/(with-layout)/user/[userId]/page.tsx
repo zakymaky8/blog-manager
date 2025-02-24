@@ -1,5 +1,6 @@
 import { fetchSingleUser } from "@/actions/fetchsAction";
 import DeleteAccount from "@/app/_lib/DeleteAccount";
+import Inconvienence from "@/app/_lib/Inconveinence";
 import { TAuthor } from "@/app/_lib/type";
 import Link from "next/link"
 import { redirect } from "next/navigation";
@@ -8,10 +9,14 @@ const UserDetail = async ({ params }: {params: {userId: string}}) => {
 
   const { userId } = await params;
 
-  const { success, data, redirectUrl, status, message } = await fetchSingleUser(userId);
+  const { success, data, redirectUrl, fetchstatus, status, message } = await fetchSingleUser(userId);
 
   if (!success && redirectUrl !== null) {
       redirect(redirectUrl)
+  }
+
+  if (fetchstatus === false || success === false) {
+    return <Inconvienence message={message}/>
   }
 
   const { user } : { user: TAuthor} = data

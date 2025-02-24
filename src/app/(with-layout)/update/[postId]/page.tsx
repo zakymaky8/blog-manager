@@ -1,5 +1,6 @@
 import { fetchSinglePost } from "@/actions/fetchsAction";
 import CreatePostForm from "@/app/_lib/CreatePostForm"
+import Inconvienence from "@/app/_lib/Inconveinence";
 import { redirect } from "next/navigation";
 
 const UpdatePostForm = async ({params}: {
@@ -10,9 +11,13 @@ const UpdatePostForm = async ({params}: {
 }) => {
 
   const { postId } = await params;
-  const { success, redirectUrl, data } = await fetchSinglePost(postId)
+  const { success, redirectUrl, data, status, message } = await fetchSinglePost(postId)
   if (redirectUrl !== null && !success) {
     redirect(redirectUrl)
+  }
+
+  if (status === false || !success) {
+    return <Inconvienence message={message} />
   }
   const {post, author} = data;
 

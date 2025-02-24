@@ -32,7 +32,7 @@ export const createPostAction = async (status: TStatus, content: string, formdat
     } catch {
         return {
             success: false,
-            message: "Error Occured!",
+            message: "Error occured when creating blog!",
             redirectUrl: null
         }
     }

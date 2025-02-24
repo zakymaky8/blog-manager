@@ -52,9 +52,6 @@ const CreatePostForm = ({post_id, postTitle, postContent, action, pageTitle, aut
     if (!["", null].includes(state.redirectUrl)) {
         router.push(state.redirectUrl!)
     }
-    if(state.success === false) {
-        alert(state.message)
-    }
 
     useEffect(() => {
         if (state.success === true) {
@@ -69,6 +66,7 @@ const CreatePostForm = ({post_id, postTitle, postContent, action, pageTitle, aut
           className="text-black flex flex-wrap flex-col items-center justify-between gap-6 p-2 flex-auto">
           <h1 className="text-2xl font-bold border-b-[1px] border-red-400">{pageTitle}</h1>
           {typeof author !== "string" && <span>Authored By: {cap(author.firstname)} {cap(author.lastname)}</span>}
+          
           <div className="flex gap-2 flex-col">
               <label htmlFor="title"  className="text-slate-500 mb-6 mt-10">👉 Blog Title: </label>
               <input
@@ -115,7 +113,7 @@ const CreatePostForm = ({post_id, postTitle, postContent, action, pageTitle, aut
               <label htmlFor="content"  className="text-slate-500 mb-6 mt-10">👉 Write Your idea </label>
               <EditorTinyMce postContent={postContent} editorRef ={editorRef} />
           </div>
-
+          {state.success === false && <span className="text-red-700 italic text-[14px]">{state.message}</span>}
           <div className="text-sm flex w-96 justify-between my-20">
               {
                 action.toLowerCase() !== "update" &&
