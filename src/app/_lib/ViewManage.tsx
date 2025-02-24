@@ -2,6 +2,7 @@ import Link from "next/link"
 import { redirect } from "next/navigation";
 import { decideWhichFormat } from "./utils";
 import { fetchAllPosts } from "@/actions/fetchsAction";
+import Inconvienence from "./Inconveinence";
 
 export type TPost = {
     posts_id: string;
@@ -28,10 +29,14 @@ export type TComment = {
 
 const ViewManage = async () => {
 
-    const { success, data, redirectUrl } = await fetchAllPosts();
+    const { success, data, redirectUrl, status, message } = await fetchAllPosts();
 
     if (!success && redirectUrl !== null) {
         redirect(redirectUrl)
+    }
+
+    if (status === false || success === false) {
+        return <Inconvienence message={message}/>
     }
 
     const { posts } : { posts: TPost[]} = data

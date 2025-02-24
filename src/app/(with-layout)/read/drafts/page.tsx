@@ -6,13 +6,17 @@ import editBtn from "../../../../../public/edit_icon.svg"
 import TogglePublish from "@/app/_lib/TogglePublish";
 import { redirect } from "next/navigation";
 import { fetchDraftPosts } from "@/actions/fetchsAction";
+import Inconvienence from "@/app/_lib/Inconveinence";
 
 const Drafts = async () => {
 
-    const { success, data, redirectUrl } = await fetchDraftPosts();
+    const { success, data, redirectUrl, status, message } = await fetchDraftPosts();
 
     if (!success && redirectUrl !== null) {
         redirect(redirectUrl)
+    }
+    if (status === false || success === false) {
+        return <Inconvienence message={message}/>
     }
     const { drafts:posts } : { drafts: TPost[]} = data
 

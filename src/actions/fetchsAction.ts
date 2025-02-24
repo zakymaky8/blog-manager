@@ -23,13 +23,15 @@ export const commonFetch = async (url: string, token: string | undefined) => {
         return {
             success,
             message,
+            status: true,
             redirectUrl: [400, 401, 403].includes(response.status) ? "/admin-login" : null,
             data
         }
     } catch {
         return {
             success: false,
-            message: "Error Occured!",
+            status: false,
+            message: "Error Occured while fetching data!",
             redirectUrl: null,
             data: null
         }
@@ -48,13 +50,15 @@ export const fetchPublishedPosts = async () => {
         return {
             success,
             message,
+            status: true,
             redirectUrl: [400, 401].includes(response.status) ? "/admin-login" : null,
             posts
         }
     } catch {
         return {
             success: false,
-            message: "Error Occured!",
+            status: false,
+            message: "Error Occured while fetching posts!",
             redirectUrl: null,
             posts: null
         }
@@ -76,13 +80,15 @@ export const fetchSinglePost = async (postId: string) => {
         return {
             success,
             message,
+            status: true,
             redirectUrl: [400, 401].includes(response.status) ? "/admin-login" : null,
             data
         }
     } catch {
         return {
             success: false,
-            message: "Error Occured!",
+            status: false,
+            message: "Error Occured while getting a post's information!",
             redirectUrl: null,
             data: null
         }
@@ -136,6 +142,7 @@ export const fetchSingleUser = async (userId:string) => {
         const { success, message, data } = await response.json()
         return {
             success,
+            fetchstatus: true,
             status: response.status,
             message,
             redirectUrl: [400, 401, 403].includes(response.status) ? "/admin-login" : null,
@@ -144,8 +151,9 @@ export const fetchSingleUser = async (userId:string) => {
     } catch {
         return {
             success: false,
+            fetchstatus: false,
             status: null,
-            message: "Error Occured!",
+            message: "Error Occured while getting a user!",
             redirectUrl: null,
             data: null
         }
@@ -164,6 +172,7 @@ export const fetchSingleUserActivities = async (userId:string) => {
         return {
             success,
             status: response.status,
+            fetchstatus: true,
             message,
             redirectUrl: [400, 401, 403].includes(response.status) ? "/admin-login" : null,
             data
@@ -172,7 +181,8 @@ export const fetchSingleUserActivities = async (userId:string) => {
         return {
             success: false,
             status: null,
-            message: "Error Occured!",
+            fetchstatus: false,
+            message: "Error Occured while fetching activities!",
             redirectUrl: null,
             data: null
         }

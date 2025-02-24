@@ -2,15 +2,19 @@ import { redirect } from "next/navigation";
 import DeletePostBtn from "./DeletePostBtn";
 import { TPost } from "./type";
 import { fetchAllPosts } from "@/actions/fetchsAction";
+import Inconvienence from "./Inconveinence";
 
 const DeletePost = async () => {
 
-    const { success, data, redirectUrl } = await fetchAllPosts();
+    const { success, data, redirectUrl, status, message } = await fetchAllPosts();
 
     if (!success && redirectUrl !== null) {
         redirect(redirectUrl)
     }
 
+    if (status === false || success === false) {
+        return <Inconvienence message={message}/>
+    }
     const { posts } : { posts: TPost[]} = data
   return (
     <div className="w-full flex flex-col flex-auto items-center gap-4 p-4 text-black">

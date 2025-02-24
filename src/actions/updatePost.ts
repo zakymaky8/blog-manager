@@ -32,7 +32,7 @@ export const updatePostAction = async ( post_id: string, action:string, content:
     } catch {
         return {
                 success: false,
-                message: "Error Occured!",
+                message: "Error Occured when upadting blog post!",
                 redirectUrl: null
                }
     }
@@ -62,7 +62,7 @@ export const togglePublishAction = async (action: string, post_id: string) => {
     } catch {
         return {
                 success: false,
-                message: "Error Occured!",
+                message: "Error occured when toggling publish status!",
                 redirectUrl: null
             }
     }
