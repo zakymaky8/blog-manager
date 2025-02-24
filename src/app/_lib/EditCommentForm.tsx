@@ -1,8 +1,9 @@
 "use client"
 
-import { Dispatch, FormEvent, SetStateAction, useState } from "react"
-import { getTokenFromCookies } from "./utils"
-import { usePathname, useRouter } from "next/navigation"
+import { Dispatch, SetStateAction, useActionState, useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
+import { updateCommentAction } from "@/actions/updateComment"
+import { updateReplyAction } from "@/actions/updateReply"
 
 
 const EditCommentForm = ({content, setIsEditMode, postId, commentId, type, replyId}:
@@ -15,38 +16,41 @@ const EditCommentForm = ({content, setIsEditMode, postId, commentId, type, reply
         content: string
 }) => {
     const router = useRouter()
-    const pathname = usePathname()
     const [editValue, setEditValue] = useState(content)
-    async function handleSubmit(e:FormEvent<HTMLFormElement>) {
-        e.preventDefault()
-        const token = getTokenFromCookies()
-        const formData = new FormData(e.target as HTMLFormElement);
-        const commentData = {
-            content: formData.get("content")
-        }
-        const url = type === "comment" ? `http://localhost:3456/posts/${postId}/comments/${commentId}?action=update_content` :
-                                        `http://localhost:3456/posts/${postId}/comments/${commentId}/replies/${replyId}?action=update_content`;
 
-        const res = await fetch(url, {
-            method: "PUT",
-            headers: {
-                "authorization": `Bearer ${token}`,
-                "content-type": "application/json"
-            },
-            body: JSON.stringify(commentData)
-        })
-        if (!res.ok) {
-            alert("unable to edit")
-            router.replace('/admin-login')
-            setIsEditMode(false)
-        } else {
-            router.replace(pathname, {scroll: false})
+    const actionWrapper =
+        async function(
+            prev:{
+                success: boolean,
+                message: string,
+                redirectUrl: string | null,
+                },
+            formData: FormData) {
+
+        return type === "comment" ?
+                await updateCommentAction(postId, commentId, formData) :
+                await updateReplyAction(postId, commentId, replyId, formData)
+    }
+
+    const [state, formStateAction ] = useActionState(actionWrapper, {success: "", message: "", redirectUrl: ""});
+
+    if (!["", null].includes(state.redirectUrl)) {
+        router.push(state.redirectUrl!)
+    }
+    if(state.success === false) {
+        alert(state.message)
+    }
+
+    useEffect(() => {
+        if (state.success === true) {
+            router.refresh();
             setIsEditMode(false)
         }
-    }
+        state.success = ""
+    }, [state, router, setIsEditMode]);
   return (
-    <form 
-        onSubmit={handleSubmit} //consider unchanged cancel
+    <form
+        action={formStateAction}
         className="flex mt-1 mb-1"
         >
         <textarea
@@ -54,15 +58,16 @@ const EditCommentForm = ({content, setIsEditMode, postId, commentId, type, reply
             value={editValue}
             onChange={(e) => setEditValue(e.target.value)}
             id="content"
-            className="h-fit w-fit resize-none  bg-slate-400 pl-1 text-green-950"
-        
+            rows={6}
+            cols={28}
+            className="h-max resize-none m-1 bg-slate-400 p-2 text-[14px] text-green-950"
+
         ></textarea>
 
         {editValue === content ?
             <span onClick={() => setIsEditMode(false)} className="bg-black cursor-pointer text-white text-[13px] h-fit p-1 rounded-none">cancel</span> : 
             <button type="submit" className=" rounded-none h-fit w-50px text-[13px]">Edit</button>
         }
-        
     </form>
   )
 }

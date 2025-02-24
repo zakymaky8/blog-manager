@@ -1,45 +1,46 @@
 "use client"
 
-import { usePathname, useRouter } from "next/navigation"
-import { FormEvent } from "react"
+import { togglePublishAction } from "@/actions/updatePost"
+import { useRouter } from "next/navigation"
+import { useActionState, useEffect } from "react"
 
 const TogglePublish = ({postId, action}: {
     postId: string,
     action: string
     }) => {
-        const router = useRouter();
-        const pathname = usePathname()
 
-        async function handleSubmit(e: FormEvent<HTMLElement>) {
-            e.preventDefault()
-            const getTokenFromCookies = () => {
-                const cookies = document.cookie.split("; ");
-                const tokenCookie = cookies.find(cookie => cookie.startsWith("token="));
-                return tokenCookie ? tokenCookie.split("=")[1] : null;
-            };
-            const token = getTokenFromCookies();
-            try {
-                const res = await fetch(`http://localhost:3456/posts/${postId}?action=${action.toLowerCase()}`, {
-                    method: "PUT",
-                    headers: {
-                        "authorization": `Bearer ${token}`
-                    }
-                })
-                if (!res.ok) {
-                    router.replace("/admin-login")
-                } else {
-                    router.replace(pathname)
-                }
-            } catch {
-                throw new Error("falied to published")
-            }
+    const router = useRouter();
+    const actionWrapper = async () =>  await togglePublishAction(action.toLowerCase(), postId)
+    const [ state, formAction ] = useActionState(actionWrapper, { success: "", message: "", redirectUrl: "" } )
+
+    useEffect(() => {
+        if (state.success === true) {
+          router.refresh();
+        }
+        state.success = ""
+      }, [state, router]);
+
+
+
+    if (!["", null].includes(state.redirectUrl)) {
+        router.push(state.redirectUrl!)
+    }
+
+    if(state.success === false && state.redirectUrl === null ) {
+        alert(state.message)
     }
     return (
-        <form onSubmit={handleSubmit}>
+        <form action={formAction}>
             <button
                 title="toggle post status"
                 className="text-[11px] w-fit h-fit p-1"
-                type='submit'>
+                type='submit'
+                onClick={() => {
+                    if (state.success) {
+                        router.replace("", {scroll: false})
+                    }
+                }}
+                >
                     {action}
             </button>
         </form>

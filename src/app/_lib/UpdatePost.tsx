@@ -1,8 +1,7 @@
 import Link from "next/link";
-// import Search from "./Search"
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { decideWhichFormat } from "./utils";
+import { fetchPublishedPosts } from "@/actions/fetchsAction";
 
 export type TPost = {
     posts_id: string;
@@ -18,23 +17,13 @@ export type TPost = {
 }
 
 const UpdatePost = async () => {
-    const cookieStore =  cookies();
-    const token = (await cookieStore).get("token")?.value;
-    
-    const res = await fetch(`http://localhost:3456/posts`, {
-        headers: {
-            "content-type": "application/json",
-            "authorization": `Bearer ${token}`
-        }
-    });
-    if (!res.ok) {
-        redirect("/admin-login")
+    const { redirectUrl, success, posts } = await fetchPublishedPosts()
+    if (redirectUrl !==null && !success) {
+        redirect(redirectUrl)
     }
-    const { posts } = await res.json()
   return (
     <div className="w-full flex flex-col flex-auto items-center gap-4 p-4 text-black">
         <h1 className="text-2xl pb-2 border-b-[1px] border-black">Update Published Post</h1>
-        {/* <Search /> */}
         <div className="flex flex-col gap-3">
             { posts.length > 0 ? 
                 posts.map((post:TPost, index: number) => {
@@ -47,8 +36,8 @@ const UpdatePost = async () => {
                             </div>
                         </div>
                     )
-                }) : 
-                <span 
+                }) :
+                <span
                     className="text-center opacity-60 text-[14px] mt-20 italic">
                         Published posts will appear here If you create one!
                 </span>
