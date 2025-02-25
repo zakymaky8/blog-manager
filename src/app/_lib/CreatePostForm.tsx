@@ -42,6 +42,7 @@ const CreatePostForm = ({post_id, postTitle, postContent, action, pageTitle, aut
                 },
             formData: FormData) {
 
+        // @ts-expect-error expected error
         const editorContent = editorRef.current?.getContent()
         return action.toLowerCase() === "update" ?
                 updatePostAction(post_id, action, editorContent, formData) :

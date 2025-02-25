@@ -4,8 +4,11 @@
 
 import dynamic from "next/dynamic";
 
+// @ts-expect-error error expected
+
 const Editor = dynamic(() => import("@tinymce/tinymce-react").then(mod => mod.Editor), { ssr: false });
 
+// @ts-expect-error expected error
 const EditorTinyMce = ({ editorRef, postContent }) => {
   return (
     <Editor

@@ -4,9 +4,7 @@ import Inconvienence from "@/app/_lib/Inconveinence";
 import { redirect } from "next/navigation";
 
 const UpdatePostForm = async ({params}: {
-    params: {
-        postId: string
-    }
+    params: Promise<{postId: string}>
 
 }) => {
 

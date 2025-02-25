@@ -15,7 +15,7 @@ const SignUpForm = () => {
       router.replace(state.redirectUrl!)
     }
     return (
-      <form action={formAction} method="POST" className="flex flex-col flex-wrap rounded h-1/2 p-8 pb-0 gap-8 justify-center m-4 min-w-72  bg-slate-500">
+      <form action={formAction} method="POST" className="flex flex-col flex-wrap rounded h-1/2 p-8 pb-4 gap-8 justify-center m-4 min-w-72  bg-slate-500">
         <div className="flex flex-col gap-4">
           <div className="flex justify-between gap-2 items-center">
             <label htmlFor="fname">First Name: </label>

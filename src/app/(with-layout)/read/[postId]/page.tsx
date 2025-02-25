@@ -11,9 +11,7 @@ import { cap } from '@/app/_lib/utils';
 import { fetchSinglePost } from '@/actions/fetchsAction';
 
 const PostDetail = async ({params}: {
-    params: {
-        postId: string
-    }
+    params: Promise<{postId: string}>
   }) => {
     const { postId } = await params;
 
