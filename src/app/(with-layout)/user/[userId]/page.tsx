@@ -5,7 +5,7 @@ import { TAuthor } from "@/app/_lib/type";
 import Link from "next/link"
 import { redirect } from "next/navigation";
 
-const UserDetail = async ({ params }: {params: {userId: string}}) => {
+const UserDetail = async ({ params }: {params: Promise<{userId: string}>}) => {
 
   const { userId } = await params;
 

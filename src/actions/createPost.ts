@@ -11,7 +11,7 @@ export const createPostAction = async (status: TStatus, content: string, formdat
         timeRead: formdata.get("time_read") as string,
         content: content
     }
-    const url = `${process.env.API_URL}/api/create_post?status=${status}`;
+    const url = `${process.env.API_URL}/api/posts?status=${status}`;
     const token = await getAccessToken()
 
     try {

@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import React from 'react'
 
-const UserActivities = async ({ params }: {params: {userId: string}}) => {
+const UserActivities = async ({ params }: {params: Promise<{userId: string}>}) => {
   const { userId } = await params;
 
   const { success, data, redirectUrl, status, message, fetchstatus } = await fetchSingleUserActivities(userId);
