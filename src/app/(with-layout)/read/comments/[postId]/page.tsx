@@ -4,11 +4,11 @@ import { TComment } from "@/app/_lib/type";
 import Link from "next/link";
 
 
-const CommentsPage = async ({ params }: { params: Promise<{ postId: string }> } ) => {
-
+const CommentsPage = async ({ params, searchParams }: { params: Promise<{ postId: string }>, searchParams: Promise<{ page: number, limit: number, search: string }> } ) => {
+  const { limit, page, search } = await searchParams
   const { postId } = await params;
 
-  const { data:{ comments }  } = await fetchPostsComments(postId)
+  const { data:{ comments }  } = await fetchPostsComments(postId, search, page, limit)
 
   return (
     <div className="flex flex-col gap-4 items-center min-w-[340px] my-10 flex-grow text-black">

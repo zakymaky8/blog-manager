@@ -16,7 +16,7 @@ const UpdatePostForm = async ({params, searchParams}: {
     redirect(redirectUrl)
   }
 
-  if (status === false || !success) {
+  if (status === null || !success) {
     return <Inconvienence message={message} />
   }
   const {post, author} = data;
