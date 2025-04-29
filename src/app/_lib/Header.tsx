@@ -5,19 +5,19 @@ import Logout from "./Logout";
 import { useEffect, useState } from "react";
 import create from "../../../public/create.svg"
 import Image from "next/image";
-import { TAuthor } from "./type";
+// import { TAuthor } from "./type";
 import { checkLogInStatus } from "@/actions/authActions";
 
 export default function Header() {
     const [isLogged, setIsLogged] = useState(false);
-    const [user, setUser] = useState<TAuthor>({users_id: "", firstname: "", lastname: "", username: "", password: "", Role: ""})
+    // const [user, setUser] = useState<TAuthor>()
 
     useEffect(() => {
       const IsUserLoggedIn = async () => {
-        const { success, user } = await checkLogInStatus()
+        const { success } = await checkLogInStatus()
         if (success) {
           setIsLogged(true)
-          setUser(user)
+          // setUser(user)
         } else {
           setIsLogged(false)
         }
@@ -37,8 +37,6 @@ export default function Header() {
               <Link href="/create"><Image src={create} alt="create" className="bg-white rounded-[50%]"/></Link>
               <Link href="/read/drafts"><button className="bg-transparent p-1 text-[20px]"> 📝 </button></Link>
               <Logout isLogged={isLogged} setIsLogged={setIsLogged} />
-
-              <span>{user?.username}</span>
             </>}
 
             { !isLogged && <Link href="/admin-login"><button> Get In </button></Link>}

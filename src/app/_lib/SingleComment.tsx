@@ -10,6 +10,7 @@ import EditCommentForm from "./EditCommentForm"
 import ReplyForm from "./ReplyForm"
 import { TAuthor, TComment } from "./type"
 import Link from "next/link"
+import DislikeButton from "./DislikeButton"
 
 type TProps = {
     commentIsLiked: boolean,
@@ -17,11 +18,12 @@ type TProps = {
     comment: TComment,
     currentUser: TAuthor,
     authorname: TAuthor | undefined,
-    postId: string
+    postId: string,
+    commentIsDisLiked: boolean
 }
 
 
-const SingleComment = ({commentIsLiked, commentAuthor, comment, currentUser, authorname, postId}: TProps) => {
+const SingleComment = ({commentIsLiked, commentIsDisLiked, commentAuthor, comment, currentUser, authorname, postId}: TProps) => {
     const [isEditMode, setIsEditMode] = useState(false);
     const [isReply, setIsReply] = useState(false)
 
@@ -30,11 +32,16 @@ const SingleComment = ({commentIsLiked, commentAuthor, comment, currentUser, aut
         <h3><Link className="text-sm text-gray-600 hover:underline no-underline cursor-pointer" href={`/user/${comment.user_id}`}>@{authorname?.username}</Link></h3>
         {
         isEditMode ? <EditCommentForm content={comment.content} replyId="" type="comment" commentId = {comment.comments_id} postId={postId} setIsEditMode={setIsEditMode} /> : <p className="pt-1 text-xs italic mb-2">{comment.content}</p>
-        
         }
         <div className="self-end flex gap-2 items-start">
-            <span className="text-[16px] mr-1">{comment.likes?.length}</span>
-            <LikeButton replyId="" bg={commentIsLiked ? "bg-red-500" : "bg-none"} postId={postId} type="comment" commentId={comment.comments_id} />
+            <div className="flex items-center gap-[2px]">
+                <span className=" mr-1 text-red-900 font-extrabold rounded-xl px-[7px]">{comment.dislikes?.length}</span>
+                <DislikeButton replyId="" bg={commentIsDisLiked ? "#ef4444" : "black"} postId={postId} type="comment" commentId={comment.comments_id} />
+            </div>
+            <div className="flex items-center gap-[2px]">
+                <span className=" mr-1 text-red-900 font-extrabold rounded-xl px-[7px]">{comment.likes?.length}</span>
+                <LikeButton replyId="" bg={commentIsLiked ? "#ef4444" : "black"} postId={postId} type="comment" commentId={comment.comments_id} />
+            </div>
             <ReplyButton setIsReply = {setIsReply}/>
             {
             currentUser.users_id === commentAuthor?.users_id &&

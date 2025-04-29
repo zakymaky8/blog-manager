@@ -33,7 +33,7 @@ const TogglePublish = ({postId, action}: {
         <form action={formAction}>
             <button
                 title="toggle post status"
-                className="text-[11px] w-fit h-fit p-1"
+                className="text-[11px] w-fit h-fit py-[6px] px-4"
                 type='submit'
                 onClick={() => {
                     if (state.success) {

@@ -1,9 +1,9 @@
 import ViewManage from "../../_lib/ViewManage"
 
-const ReadPost = () => {
+const ReadPost = async ({ searchParams }: { searchParams: Promise<{ page: number, limit: number, search: string }> }) => {
     return (
       <>
-        <ViewManage />
+        <ViewManage searchParams={searchParams} />
       </>
     )
   }

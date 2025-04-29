@@ -8,6 +8,7 @@ export const updatePostAction = async ( post_id: string, action:string, content:
         excerpt: formdata.get("excerpt") as string,
         timeRead: formdata.get("time_read") as string,
         content: content,
+        priority: formdata.get("priority") as string
     }
 
     const url = `${process.env.API_URL}/api/posts/${post_id}?action=${action.toLowerCase()}`;

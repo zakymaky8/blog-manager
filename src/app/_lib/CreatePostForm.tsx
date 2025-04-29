@@ -11,6 +11,7 @@ import { TStatus } from "@/utils/type";
 import { createPostAction } from "@/actions/createPost";
 import { updatePostAction } from "@/actions/updatePost";
 
+type TPriority = "LOW" | "MEDIUM" | "HIGH"
 type TProps = {
     postTitle: string,
     postContent: string,
@@ -19,17 +20,20 @@ type TProps = {
     post_id: string,
     excerptContent: string,
     readTime: string,
+    priority: TPriority,
+    suggestion_id: string,
     author: {
         firstname: string,
         lastname: string
     } | string
 }
 
-const CreatePostForm = ({post_id, postTitle, postContent, action, pageTitle, author, excerptContent, readTime}: TProps) => {
+const CreatePostForm = ({post_id, postTitle, postContent, action, pageTitle, author, excerptContent, readTime, priority, suggestion_id}: TProps) => {
     const [status, setStatus] = useState<TStatus>("DRAFT");
     const [title, setTitle] = useState(postTitle ? postTitle : "")
     const [excerpt, setExcerpt] = useState(excerptContent ? excerptContent : "")
     const [timeRead, setTimeRead] = useState(readTime ? readTime : 0)
+    const [priorty, setPriorty] = useState(priority ? priority : "MEDIUM")
     const router = useRouter()
     const editorRef = useRef<Editor | null>(null);
 
@@ -46,7 +50,7 @@ const CreatePostForm = ({post_id, postTitle, postContent, action, pageTitle, aut
         const editorContent = editorRef.current?.getContent()
         return action.toLowerCase() === "update" ?
                 updatePostAction(post_id, action, editorContent, formData) :
-                createPostAction(status, editorContent, formData)
+                createPostAction(status, editorContent, suggestion_id, formData)
     }
     const [state, formStateAction ] = useActionState(actionWrapper, {success: "", message: "", redirectUrl: ""});
 
@@ -56,7 +60,7 @@ const CreatePostForm = ({post_id, postTitle, postContent, action, pageTitle, aut
 
     useEffect(() => {
         if (state.success === true) {
-            router.back();
+            router.refresh();
         }
         state.success = ""
     }, [state, router]);
@@ -97,6 +101,21 @@ const CreatePostForm = ({post_id, postTitle, postContent, action, pageTitle, aut
           </div>
 
           <div className="flex gap-2 flex-col">
+              <label htmlFor="priority" className="text-slate-500 mb-6 mt-10">Post Significance: </label>
+              <select
+                value={priorty}
+                name="priority"
+                id="priority"
+                onChange={(e) => setPriorty(e.target.value as TPriority)}
+                className="bg-slate-200 p-2 rounded cursor-pointer hover:bg-[#c4c9d0]"
+                >
+                <option value="LOW">Low</option>
+                <option value="MEDIUM">Medium</option>
+                <option value="HIGH">High</option>
+              </select>
+          </div>
+
+          <div className="flex gap-2 flex-col">
             <label htmlFor="time_read"  className="text-slate-500 mb-6 mt-10">Reading time in min: </label>
             <input
                 value={timeRead}
@@ -120,7 +139,7 @@ const CreatePostForm = ({post_id, postTitle, postContent, action, pageTitle, aut
                 action.toLowerCase() !== "update" &&
                     <button
                         type="submit"
-                        className="bg-yellow-950"
+                        className="bg-yellow-950 py-3 px-5"
                         onClick={() => setStatus("DRAFT")}
                          >📝 Save As Draft
                     </button>
@@ -128,7 +147,7 @@ const CreatePostForm = ({post_id, postTitle, postContent, action, pageTitle, aut
 
               <button
                     type="submit"
-                    className="bg-green-950"
+                    className="bg-green-950 py-3 px-5"
                     onClick={() => action.toLowerCase()==="update" ? null : setStatus("PUBLISHED")}
                      >{action}
               </button>

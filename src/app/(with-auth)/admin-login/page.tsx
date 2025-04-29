@@ -7,7 +7,7 @@ const AdminLogin = () => {
       <br />
       <h1 className="text-gray-900 font-bold">Sign In</h1>
       <LoginForm />
-      <span className="text-gray-900">No account yet? <Link href="/admin-signup" className="underline">Register</Link></span>
+      <span className="text-gray-900">No account yet? <Link href="/admin-signup" className="underline hover:no-underline">Register</Link></span>
     </div>
   )
 }

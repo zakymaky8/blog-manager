@@ -1,18 +1,23 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client"
 
 import { SignInAction } from "@/actions/authActions";
-import { redirect } from "next/navigation";
-import { useActionState, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useActionState, useEffect, useState } from "react";
 
 const LoginForm = () => {
   const [isPwdSeen, setIsPwdSeen] = useState(false)
   const [state, action] = useActionState(SignInAction, {success: "", message: ""})
+  const router = useRouter()
 
-  if (state.success === true) {
-    redirect("/actions")
-  }
+  useEffect(() => {
+      if (state.success ) {
+        router.push("/actions")
+      }
+  }, [state]);
+  
   return (
-    <form action={action} method="POST"  className="flex flex-col  h-1/2 p-6 pt-10 gap-5 pb-2 m-4 min-w-80 rounded bg-slate-500">
+    <form action={action} className="flex flex-col  h-1/2 p-6 pt-10 gap-5 pb-2 m-4 min-w-80 rounded bg-slate-500">
         <div className="flex justify-between gap-2 items-center">
           <label htmlFor="uname">Username: </label>
           <input type="text" name="username" required id="uname" className="w-32 bg-slate-800 text-white rounded-lg p-2 box-border flex-grow" placeholder="username"/>
@@ -27,7 +32,7 @@ const LoginForm = () => {
             <input
                 required placeholder="********" className="w-32 text-white pt-1 bg-black rounded h-6 pl-2 pr-2" type="password" name="admin_pwd" id="role"/>
           </div>
-        <button type="submit" className="bg-slate-800 hover:bg-slate-900 mt-6">Log in</button>
+        <button type="submit" className="bg-slate-800 hover:bg-slate-900 mt-10 py-3">Log in</button>
         {!state.success && <span className="self-center text-red-900">{state.message}</span>}
     </form>
   )
