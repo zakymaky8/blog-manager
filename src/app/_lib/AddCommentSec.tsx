@@ -29,10 +29,23 @@ const AddCommentSec = ({postId}: {postId: string}) => {
   return (
     <form
         action={formAction}
-        className="mb-6 flex justify-center flex-wrap items-center p-2 gap-2">
-            <input value={value} onChange={(e) => setValue(e.target.value)} type="text" name="content" id="addcomment" className="max-w-[200px] text-white pl-2 pr-2 h-8 bg-slate-600 rounded-[2px]" placeholder="add your comment ..." required/>
-            <button type="submit" className="h-8 text-white text-[12px] hover:opacity-70 w-16">Add</button>
-</form>
+        className="mb-6 flex flex-col justify-center flex-wrap items-center p-2 gap-1">
+            <textarea
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+                name="content"
+                id="addcomment"
+                className="w-full text-white pt-2 px-2 h-20 bg-slate-600 rounded resize-none border-[2px] border-gray-900"
+                placeholder="Add your comment ..."
+                required
+            ></textarea>
+            <button
+                type="submit"
+                disabled={!value}
+                className={`h-7 ${!value ? "bg-gray-500" : "bg-[#1f1f1f] hover:bg-black"} text-[#d2cfcf] text-[14px] w-14 self-end`}
+                    >Add
+            </button>
+    </form>
   )
 }
 

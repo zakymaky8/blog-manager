@@ -4,12 +4,14 @@ import { getAccessToken } from "@/utils/server-only";
 import { TStatus } from "@/utils/type"
 
 
-export const createPostAction = async (status: TStatus, content: string, formdata: FormData) => {
+export const createPostAction = async (status: TStatus, content: string, suggId: string, formdata: FormData) => {
     const blogData = {
         title: formdata.get("title") as string,
         excerpt: formdata.get("excerpt") as string,
         timeRead: formdata.get("time_read") as string,
-        content: content
+        content: content,
+        suggestion: suggId ?? null,
+        priority: formdata.get("priority") as string
     }
     const url = `${process.env.API_URL}/api/posts?status=${status}`;
     const token = await getAccessToken()

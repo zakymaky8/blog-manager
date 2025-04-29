@@ -6,10 +6,13 @@ export type TPost = {
   createdAt: Date;
   lastUpdate: Date;
   postImgs: string[];
-  likes: number;
+  likes: string[];
+  dislikes: string[];
+  excerpt: string;
   views: number;
   user_id: string;
   status: "DRAFT" | "PUBLISHED";
+  suggnsToPost: string[]
 }
 
 export type TPaired = {
@@ -24,7 +27,8 @@ export type TReply = {
   replies_id: string;
   comment_id: string;
   replied_id: string;
-  likes: string[]
+  likes: string[],
+  dislikes: string[]
 }
 
 export type TAuthor = {
@@ -33,7 +37,10 @@ export type TAuthor = {
   lastname: string,
   username: string,
   password: string,
-  Role: string
+  isWarned: boolean,
+  Role: string,
+  createdAt: Date,
+  profilePic: string
 }
 
 export type TComment = {
@@ -41,6 +48,7 @@ export type TComment = {
   createdAt: Date;
   lastUpdate: Date;
   likes: string[];
+  dislikes: string[],
   user_id: string;
   comments_id: string;
   post_id: string;
@@ -50,4 +58,22 @@ export type TComment = {
 export type TReplyActor = {
 replier: TAuthor,
 replied_to: TAuthor
+}
+
+
+export type TSuggestions = {
+  suggns_id: string;
+  priority: "LOW" | "MEDIUM" | "HIGH";
+  user_id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  postsToSugg: string[];
+  isVisible: boolean;
+  status: "PENDING" | "ADDRESSED" | "DENIED";
+  content: string;
+}
+
+export type TPageProps = {
+  params:  Promise<{ postId: string }>,
+  searchParams: Promise<{ search: string, page: number, limit: number }>
 }

@@ -28,7 +28,7 @@ export const commonFetch = async (url: string, token: string) => {
 }
 
 export const likePostAction = async (postId: string) => {
-    const url =  `http://localhost:3456/api/posts/${postId}?action=like_unlike`
+    const url =  `${process.env.API_URL}/api/posts/${postId}?action=like_unlike`
     const token = await getAccessToken();
 
     return await commonFetch(url, token!)

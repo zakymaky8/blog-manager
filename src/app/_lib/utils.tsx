@@ -49,3 +49,31 @@ export function isNew(dateInp: Date) {
 
   return diff > 7 ? false : true
 }
+
+
+
+export const formatApiUrl = (
+  api_url: string | undefined,
+  path: string,
+  page?: string | number,
+  search?: string,
+  limit?: string | number,
+  status?: string | number
+
+) => {
+
+
+
+  const possibleParams = {search, page, limit, "filter.status": status}
+  const pairs = Object.entries(possibleParams);
+
+  const urlParams = new URLSearchParams("");
+
+  for (const pair of pairs) {
+    if (pair[1] !== undefined) urlParams.set(pair[0], pair[1] as string)
+    continue
+  }
+
+  const queryParams = urlParams.toString() ? `?${urlParams.toString()}` : ""
+  return (new URL(path+queryParams, api_url)).toString()
+}

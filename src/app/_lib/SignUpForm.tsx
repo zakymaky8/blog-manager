@@ -56,17 +56,17 @@ const SignUpForm = () => {
                 type="password"
                 name="password"
                 id="pwd"
-                placeholder="password"
+                placeholder="********"
                 className=" h-10 bg-slate-800 rounded-lg p-1 box-border placeholder:text-[12px] flex-grow pl-2 text-white" />
           </div>
           <div className="flex justify-between gap-2 items-center">
             <label htmlFor="cpwd">Confirm Password: </label>
             <input
                 required
-                type="text"
+                type="password"
                 name="confirm_password"
                 id="cpwd"
-                placeholder="confirm"
+                placeholder="********"
                 className=" h-10 bg-slate-800 rounded-lg p-1 box-border placeholder:text-[12px] flex-grow pl-2 text-white" />
           </div>
           <div className="flex flex-col gap-2 items-center">

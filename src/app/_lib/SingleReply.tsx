@@ -10,6 +10,7 @@ import EditCommentForm from "./EditCommentForm"
 import DeleteButton from "./DeleteButton"
 import { TAuthor, TComment, TReply, TReplyActor } from "./type"
 import Link from "next/link"
+import DislikeButton from "./DislikeButton"
 
 
 type TProps = {
@@ -25,6 +26,7 @@ const SingleReply = ({reply, authorname, comment, postId, currentUser}: TProps) 
     const [isEditMode, setIsEditMode] = useState(false);
     const [isReply, setIsReply] = useState(false)
     const replyIsLiked = reply.likes.includes(currentUser.users_id) ? true : false
+    const replyIsDisLiked = reply.dislikes.includes(currentUser.users_id) ? true : false
 
   return (
     <div className="flex flex-col  p-3 rounded-xl " style={{maxWidth: "550px"}}>
@@ -46,8 +48,15 @@ const SingleReply = ({reply, authorname, comment, postId, currentUser}: TProps) 
              <p className="pt-1 text-[10px] italic">{reply.content}</p> }
 
         <div className="self-end flex gap-2 items-start">
-            <span className="text-[16px] mr-1">{reply.likes?.length}</span>
-            <LikeButton replyId={reply.replies_id} bg={replyIsLiked ? 'bg-red-500' : 'bg-none'} postId={postId} type="reply" commentId={comment.comments_id} />
+            <div className="flex items-center gap-[2px]">
+                <span className="text-[13px] mr-1 font-extrabold text-red-900">{reply.dislikes?.length}</span>
+                <DislikeButton replyId={reply.replies_id} bg={replyIsDisLiked ? '#ef4444' : 'black'} postId={postId} type="reply" commentId={comment.comments_id} />
+            </div>
+
+            <div className="flex items-center gap-[2px]">
+                <span className="text-[13px] mr-1 font-extrabold text-red-900">{reply.likes?.length}</span>
+                <LikeButton replyId={reply.replies_id} bg={replyIsLiked ? '#ef4444' : 'black'} postId={postId} type="reply" commentId={comment.comments_id} />
+            </div>
             <ReplyButton setIsReply={setIsReply}/>
             {
              currentUser.users_id === authorname?.replier.users_id &&

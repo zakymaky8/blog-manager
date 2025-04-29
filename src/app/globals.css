@@ -105,10 +105,6 @@ button:hover {
   opacity: 90%;
 }
 
-button:active {
-  border: 1px solid rgb(12, 189, 177);
-}
-
 .spinner {
   animation: spin 1.5s forwards infinite linear;
 }
