@@ -8,7 +8,7 @@ import Pagination from "@/app/_lib/Pagination";
 import Link from "next/link";
 
 const ViewsPage = async ({ params, searchParams }: { params: Promise<{ postId: string }>, searchParams: Promise<{ page: number, limit: number }> }) => {
-  const {postId} = await params;
+  const { postId } = await params;
   const { page, limit } = await searchParams;
 
   const {data, message, redirectUrl, success, meta} = await fetchPostViews(postId, page, limit);

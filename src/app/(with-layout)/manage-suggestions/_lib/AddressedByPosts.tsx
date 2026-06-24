@@ -8,12 +8,13 @@ import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 const AddressedByPosts = ({posts, suggestion, setStatuss}: {posts: TPost[], suggestion: TSuggestions, setStatuss: Dispatch<SetStateAction<"PENDING" | "ADDRESSED" | "DENIED">>}) => {
     const [isOn, setIsOn] = useState(false);
     const router = useRouter();
+    const [ postInfo, setPostInfo ] = useState<string[]>([])
 
     const handleChange = async (e:ChangeEvent<HTMLSelectElement>) => {
         const postId = e.target.value;
         const suggId = suggestion.suggns_id
 
-        const { message, redirectUrl, success } = await updateSuggToPostToSugg(suggId, postId);
+        const { message, redirectUrl, success } = await updateSuggToPostToSugg(suggId, postInfo[0], postInfo[1]);
 
         if (success) {
             setIsOn(false)
@@ -52,7 +53,7 @@ const AddressedByPosts = ({posts, suggestion, setStatuss}: {posts: TPost[], sugg
                     <option value="" disabled selected>Select One</option>
                     {
                         posts?.map(post => {
-                            return <option key={post.posts_id} value={post.posts_id}>{post.title.slice(0, 60)}</option>
+                            return <option key={post.posts_id} value={[post.posts_id, post.slug]}>{post.title.slice(0, 60)}</option>
                         })
                     }
                 </select>

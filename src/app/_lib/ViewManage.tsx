@@ -55,7 +55,7 @@ const ViewManage = async ({ searchParams }: { searchParams: Promise<{ page: numb
                             <p className="-mt-1 text-[13px]">{post.excerpt.length > 200 ? post.excerpt.slice(0, 200) + "..." : post.excerpt}</p>
                             <div className="flex gap-2 justify-between items-center mt-4">
                                 <div className="flex gap-2 flex-wrap flex-col items-stretch sm:flex-row">
-                                    <Link href={`/read/${post.posts_id}`} className="hover:bg-slate-950 no-underline rounded-sm text-center h-fit py-[5px] px-3 text-[13px] bg-slate-900 text-white" >Manage Post</Link>
+                                    <Link href={`/read/${post.slug}`} className="hover:bg-slate-950 no-underline rounded-sm text-center h-fit py-[5px] px-3 text-[13px] bg-slate-900 text-white" >Manage Post</Link>
                                     <Link href={`/read/comments/${post.posts_id}`} className="hover:bg-slate-950 no-underline rounded-sm text-center h-fit py-[5px] px-3 text-[13px] bg-slate-900 text-white" >Comments</Link>
                                     <Link href={`/read/likes/${post.posts_id}`} className="hover:bg-slate-950 no-underline rounded-sm text-center h-fit py-[5px] px-3 text-[13px] bg-slate-900 text-white" >Likes</Link>
                                     <Link href={`/read/dislikes/${post.posts_id}`} className="hover:bg-slate-950 no-underline rounded-sm text-center h-fit py-[5px] px-3 text-[13px] bg-slate-900 text-white" >Dislikes</Link>

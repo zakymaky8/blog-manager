@@ -72,10 +72,10 @@ export const fetchPublishedPosts = async (page: number, limit: number, search: s
 
 //  single published post
 
-export const fetchSinglePost = async (postId: string) => {
+export const fetchSinglePost = async (slug: string) => {
 
     const token = await getAccessToken()
-    const url = `${process.env.API_URL}/api/posts/${postId}`
+    const url = `${process.env.API_URL}/api/manage-posts/${slug}`
 
     try {
         const response = await fetchWithNoCache(url, token);

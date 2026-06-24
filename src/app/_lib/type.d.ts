@@ -3,6 +3,7 @@ export type TPost = {
   posts_id: string;
   title: string;
   content: string;
+  slug: string;
   createdAt: Date;
   lastUpdate: Date;
   postImgs: string[];
@@ -74,6 +75,6 @@ export type TSuggestions = {
 }
 
 export type TPageProps = {
-  params:  Promise<{ postId: string }>,
+  params:  Promise<{ slug: string }>,
   searchParams: Promise<{ search: string, page: number, limit: number }>
 }

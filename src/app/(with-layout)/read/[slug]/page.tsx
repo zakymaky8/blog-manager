@@ -17,20 +17,23 @@ import DislikeButton from "@/app/_lib/DislikeButton";
 
 
 
-
 export async function generateMetadata({ params }: TPageProps) {
-  const { postId } = await params;
-  const { data, message, success } = await fetchSinglePost(postId);
+  const { slug } = await params;
+  const { data, message, success } = await fetchSinglePost(slug);
   if (!success ) return { title: message}
   else {
-    return {title: data.post.title}
+    return {
+      title: data.post.title,
+      description: data.post.excerpt
+    }
   }
 }
 
-const PostDetail = async ({params, searchParams}: TPageProps) =>  {
-    const { postId } = await params;
 
-    const { success, data, redirectUrl, status, message } = await fetchSinglePost(postId)
+const PostDetail = async ({params, searchParams}: TPageProps) =>  {
+    const { slug: slugId } = await params;
+
+    const { success, data, redirectUrl, status, message } = await fetchSinglePost(slugId)
 
     if (!success && redirectUrl !== null) {
       return redirect(redirectUrl)
@@ -53,7 +56,7 @@ const PostDetail = async ({params, searchParams}: TPageProps) =>  {
         <div className="flex flex-col gap-3 max-w-[600px]">
           <div className='flex flex-col justify-between gap-6 items-center' >
             <div className='flex gap-2 items-end'>
-              <TogglePublish action={post.status === "DRAFT" ? "Publish" : "Unpublish"} postId={postId} />
+              <TogglePublish action={post.status === "DRAFT" ? "Publish" : "Unpublish"} postId={post.posts_id} />
               <button type="submit" className="bg-slate-300 p-0">
                 <Link href={`/update/${post.posts_id}`} className="bg-slate-300 p-0">
                   <Image title="edit post" className="h-[20px] w-[20px]" src={editbBtn} alt="edit button"/>
@@ -81,11 +84,11 @@ const PostDetail = async ({params, searchParams}: TPageProps) =>  {
             <div className="flex gap-5 items-center">
               <div className="flex gap-2 items-center">
                 <span className="text-[14px] -mt-1 cursor-pointer">{post.dislikes?.length}</span>
-                <DislikeButton commentId="" replyId="" bg={postIsDisLiked ? "#ef4444" : "black"} type='post' postId={postId}/>
+                <DislikeButton commentId="" replyId="" bg={postIsDisLiked ? "#ef4444" : "black"} type='post' postId={post.posts_id}/>
               </div>
               <div className="flex gap-2 items-center">
                 <span className="text-[14px] -mt-1 cursor-pointer">{post.likes?.length}</span>
-                <LikeButton commentId="" replyId="" bg={postIsLiked ? "#ef4444" : "black"} type='post' postId={postId}/>
+                <LikeButton commentId="" replyId="" bg={postIsLiked ? "#ef4444" : "black"} type='post' postId={post.posts_id}/>
               </div>
             </div>
             <span className="text-[14px] italic opacity-75 ml-4">{post.views.length} view{post.views.length > 1 ? "s" : ""}</span>
@@ -95,12 +98,12 @@ const PostDetail = async ({params, searchParams}: TPageProps) =>  {
 
 
         {
-          suggestions.length > 0 &&
+          (suggestions && suggestions.length > 0) &&
           <div className='self-center max-w-[600px] mt-10'>
             <h3 className='font-bold text-[16px]'>Suggestions to the post</h3>
             <ul>
               {suggestions.map((sugg: TSuggestions) => {
-                return <li className="text-[14px] italic opacity-80" key={sugg.suggns_id}>{sugg.content}</li>
+                return sugg && <li className="text-[14px] italic opacity-80" key={sugg.suggns_id}>{sugg.content}</li>
               })}
             </ul>
           </div>
@@ -110,8 +113,8 @@ const PostDetail = async ({params, searchParams}: TPageProps) =>  {
             <>
                 <hr className="w-full border-[1px] border-black opacity-50"/>
                 <div>
-                    <AddCommentSec postId={postId} />
-                    <CommentsCard postId={postId} searchParams={searchParams} />
+                    <AddCommentSec postId={post.posts_id} />
+                    <CommentsCard postId={post.posts_id} searchParams={searchParams} />
                 </div>
             </>
 

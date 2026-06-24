@@ -37,11 +37,12 @@ export const updateSuggestionStatus = async ( suggId: string, status: string) =>
 
 
 
-export const updateSuggToPostToSugg = async ( suggId: string, postId: string) => {
+export const updateSuggToPostToSugg = async ( suggId: string, postId: string, slug: string) => {
 
     const postToSugg = {
         postId,
-        suggId
+        suggId,
+        slug
     }
     const url = `${process.env.API_URL}/api/suggestions/post-to-sugg-to-post`;
     const token = await getAccessToken()
