@@ -1,4 +1,4 @@
-"user server"
+"use server"
 
 import { formatApiUrl } from "@/app/_lib/utils"
 import { getAccessToken } from "@/utils/server-only"
