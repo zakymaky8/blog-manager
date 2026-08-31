@@ -15,7 +15,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`antialiased flex flex-col justify-between bg-slate-300 text-white`} style={{minHeight: "100vh"}}>
+        className={`antialiased flex flex-col bg-slate-300 text-white`} style={{minHeight: "100vh"}}>
           <Header />
           {children}
       </body>
