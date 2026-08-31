@@ -1,22 +1,17 @@
-import Image from "next/image";
-import Link from "next/link";
+import Image from 'next/image'
+import Link from 'next/link'
+import React from 'react'
 import update from "../../../../public/edit_icon.svg";
 import deleter from "../../../../public/delete.svg";
-import { redirect } from "next/navigation";
-import { getAccessToken } from "@/utils/server-only";
 
 
-export default async function Actions() {
-  const token = await getAccessToken()
-  if (!token) {
-    redirect("/admin-login")
-  }
+const SideMenu = () => {
   return (
     <div className="flex-auto flex flex-col items-center p-5 mt-5 justify-center">
       <h2 className="text-2xl mb-4 text-black">Actions</h2>
       <div className="flex flex-col items-stretch gap-3 p-5 bg-slate-500 rounded-2xl min-w-[340px]">
           <Link href="/create" className="no-underline w-full">
-                <button className="w-full px-3 py-3 flex items-center justify-center gap-3  hover:text-gray-500 text-slate-300">
+                <button className="w-full px-3 py-3 flex items-center justify-center gap-3 hover:text-gray-500 text-slate-300">
                   ➕
                   <span>Create Blog Post</span>
                 </button>
@@ -58,14 +53,10 @@ export default async function Actions() {
                 💡 Manage Suggestions
                 </button>
           </Link>
-
-          <Link href="/manage-roles/" className=" w-full">
-                <button className=" w-full hover:text-gray-500 text-slate-300 p-3">
-                💡 Manage Roles
-                </button>
-          </Link>
           
       </div>
     </div>
-  );
+  )
 }
+
+export default SideMenu

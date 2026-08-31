@@ -48,6 +48,7 @@ const UserDetail = async ({ params }: {params: Promise<{userId: string}>}) => {
         <div className="flex flex-col gap-1">
           <span>Full Name: {`${user.firstname} ${user.lastname}`}</span>
           <span>Username: {user.username}</span>
+          <span>Role: {user.Role}</span>
         </div>
       </div>
       <div className="text-[14px] flex flex-col gap-2 mt-8">

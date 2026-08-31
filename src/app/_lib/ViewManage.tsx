@@ -61,7 +61,7 @@ const ViewManage = async ({ searchParams }: { searchParams: Promise<{ page: numb
                                     <Link href={`/read/dislikes/${post.posts_id}`} className="hover:bg-slate-950 no-underline rounded-sm text-center h-fit py-[5px] px-3 text-[13px] bg-slate-900 text-white" >Dislikes</Link>
                                     <Link href={`/read/views/${post.posts_id}`} className="hover:bg-slate-950 no-underline rounded-sm text-center h-fit py-[5px] px-3 text-[13px] bg-slate-900 text-white" >Views</Link>
                                 </div>
-                                <p className="text-[10px]">Last Update: {decideWhichFormat(post.lastUpdate)}</p>
+                                <p className="text-[10px]">Last Update: { decideWhichFormat(post.lastUpdate) }</p>
                             </div>
                         </div>
                     )

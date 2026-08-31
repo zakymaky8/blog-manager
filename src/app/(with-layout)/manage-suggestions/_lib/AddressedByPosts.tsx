@@ -3,15 +3,14 @@
 import { updateSuggToPostToSugg } from "@/actions/updateSuggestion";
 import { TPost, TSuggestions } from "@/app/_lib/type";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
 const AddressedByPosts = ({posts, suggestion, setStatuss}: {posts: TPost[], suggestion: TSuggestions, setStatuss: Dispatch<SetStateAction<"PENDING" | "ADDRESSED" | "DENIED">>}) => {
     const [isOn, setIsOn] = useState(false);
     const router = useRouter();
-    const [ postInfo, setPostInfo ] = useState<string[]>([])
+    const [ postInfo ] = useState<string[]>([])
 
-    const handleChange = async (e:ChangeEvent<HTMLSelectElement>) => {
-        const postId = e.target.value;
+    const handleChange = async () => {
         const suggId = suggestion.suggns_id
 
         const { message, redirectUrl, success } = await updateSuggToPostToSugg(suggId, postInfo[0], postInfo[1]);

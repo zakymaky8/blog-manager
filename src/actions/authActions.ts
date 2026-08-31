@@ -11,11 +11,10 @@ type TSignInState = {
 
 
 export const SignInAction = async (prevstate: TSignInState, formdata: FormData) => {
-
+ 
     const userCredential = {
-        username: formdata.get("username")!.toString(),
+        un_email: formdata.get("username")!.toString(),
         password: formdata.get("password")!.toString(),
-        admin_pwd: formdata.get("admin_pwd")!.toString()
     }
 
     const url = `${process.env.API_URL}/api/admin/auth/login`

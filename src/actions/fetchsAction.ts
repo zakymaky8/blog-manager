@@ -75,7 +75,7 @@ export const fetchPublishedPosts = async (page: number, limit: number, search: s
 export const fetchSinglePost = async (slug: string) => {
 
     const token = await getAccessToken()
-    const url = `${process.env.API_URL}/api/manage-posts/${slug}`w
+    const url = `${process.env.API_URL}/api/manage-posts/${slug}`
 
     try {
         const response = await fetchWithNoCache(url, token);
@@ -272,6 +272,62 @@ export const fetchAllSuggestions = async (search?: string, page?: number, limit?
             suggestions: null,
             users: null,
             meta: null
+        }
+    }
+}
+
+
+export const fetchAllOpenRoles = async () => {
+    const token = await getAccessToken();
+    const url = formatApiUrl(`${process.env.API_URL}`, `/api/roles/open-roles`);
+    try {
+        const response = await fetchWithNoCache(url, token);
+        const { success, message, data } = await response.json();
+        return {
+            success,
+            message,
+            status: true,
+            data: data,
+            redirectUrl: [400, 401, 403].includes(response.status) ? "/admin-login" : null,
+        }
+    } catch {
+        return {
+            success: false,
+            status: false,
+            data: null,
+            message: "Failed to fetch suggestions!",
+            redirectUrl: null,
+        }
+    }
+}
+
+
+
+
+export const fetchRequests = async () => {
+    const token = await getAccessToken();
+
+    const url = formatApiUrl(`${process.env.API_URL}`, `/api/roles/role-requests`);
+
+     try {
+        const response = await fetchWithNoCache(url, token);
+        const { success, message, data } = await response.json();
+
+        console.log({ success, message, data })
+        return {
+            success,
+            message,
+            status: true,
+            redirectUrl: [400, 401, 403].includes(response.status) ? "/admin-login" : null,
+            data
+        }
+    } catch {
+        return {
+            success: false,
+            status: false,
+            message: "Failed to fetch requests!",
+            redirectUrl: null,
+            data: null
         }
     }
 }
