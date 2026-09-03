@@ -35,7 +35,7 @@ const ManageRoleRequestPage = async () => {
 
                     <div className="flex justify-between items-center">
                         <Link href={`/user/${request.user.users_id}`} className="flex gap-2 items-center no-underline hover:underline text-black">
-                          <Image src={request.user.profilePic ? JSON.parse(request.user.profilePic).secure_url : pp.src} alt="profile picture" className="w-10 h-10 rounded-[50%]" />
+                          <Image src={request.user.profilePic ? JSON.parse(request.user.profilePic).secure_url : pp.src} alt="profile picture" className="w-10 h-10 rounded-[50%]" unoptimized />
                           <h3 className="m-1 text-base">{cap(request.user.firstname??"--") + " " + cap(request.user.lastname ?? "--")}</h3>
                       </Link>
                       <span className={`text-sm ${ request.status === "APPROVED" ? 'text-green-700' : request.status === 'REJECTED' ? 'text-red-700'  : 'text-gray-500' }`}>{ request.status ?? "Pending" }</span>
