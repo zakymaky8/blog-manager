@@ -5,9 +5,8 @@ const AdminLogin = () => {
   return (
     <div className="w-full flex items-center flex-col flex-auto mt-10">
       <br />
-      <h1 className="text-gray-900 font-bold">Sign In</h1>
+      <h1 className="text-gray-900 font-bold">Admin Log-In</h1>
       <LoginForm />
-      <span className="text-gray-900">No account yet? <Link href="/admin-signup" className="underline hover:no-underline">Register</Link></span>
       <Link href="/" className="mt-16 hover:opacity-60 hover:underline">Back to Home</Link>
     </div>
   )
